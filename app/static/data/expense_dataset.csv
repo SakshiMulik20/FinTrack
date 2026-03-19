@@ -1,0 +1,263 @@
+﻿#,Date,Day,Month,Amount (₹),Category,Note,Weekend?,Month #
+1,01-Sep-2025,Monday,September,₹60,Food,Snacks,No,1
+2,01-Sep-2025,Monday,September,₹250,Entertainment,Gaming recharge,No,1
+3,02-Sep-2025,Tuesday,September,₹110,Shopping,Toiletries,No,1
+4,02-Sep-2025,Tuesday,September,₹90,Food,Canteen lunch,No,1
+5,03-Sep-2025,Wednesday,September,₹875,Shopping,T-shirt,No,1
+6,04-Sep-2025,Thursday,September,₹50,Bills,Library fine,No,1
+7,05-Sep-2025,Friday,September,₹590,Entertainment,Cafe outing,No,1
+8,06-Sep-2025,Saturday,September,₹150,College,Project supplies,Yes,1
+9,06-Sep-2025,Saturday,September,₹245,Bills,Mobile recharge,Yes,1
+10,06-Sep-2025,Saturday,September,₹510,Food,Grocery items,Yes,1
+11,07-Sep-2025,Sunday,September,₹395,Travel,Bus pass recharge,Yes,1
+12,07-Sep-2025,Sunday,September,₹685,Food,Mess fee (partial),Yes,1
+13,08-Sep-2025,Monday,September,₹370,Bills,Internet bill,No,1
+14,08-Sep-2025,Monday,September,₹65,Food,Snacks,No,1
+15,09-Sep-2025,Tuesday,September,₹665,College,Books,No,1
+16,09-Sep-2025,Tuesday,September,₹285,Food,Grocery items,No,1
+17,09-Sep-2025,Tuesday,September,₹865,Travel,Weekend trip,No,1
+18,10-Sep-2025,Wednesday,September,₹265,Entertainment,Movie ticket,No,1
+19,11-Sep-2025,Thursday,September,₹690,College,Online course fee,No,1
+20,11-Sep-2025,Thursday,September,₹60,Bills,Water bottle,No,1
+21,12-Sep-2025,Friday,September,₹140,College,Stationery,No,1
+22,12-Sep-2025,Friday,September,₹360,Entertainment,Cafe outing,No,1
+23,13-Sep-2025,Saturday,September,₹605,Shopping,Electronics accessories,Yes,1
+24,13-Sep-2025,Saturday,September,₹135,Entertainment,Sports activity,Yes,1
+25,13-Sep-2025,Saturday,September,₹340,College,Books,Yes,1
+26,13-Sep-2025,Saturday,September,₹175,Bills,Laundry,Yes,1
+27,14-Sep-2025,Sunday,September,₹170,Shopping,Stationery shopping,Yes,1
+28,14-Sep-2025,Sunday,September,₹25,Travel,Ferry/local bus,Yes,1
+29,14-Sep-2025,Sunday,September,₹255,Entertainment,Cafe outing,Yes,1
+30,14-Sep-2025,Sunday,September,₹105,Food,Breakfast,Yes,1
+31,15-Sep-2025,Monday,September,₹55,Travel,Ferry/local bus,No,1
+32,15-Sep-2025,Monday,September,₹55,Bills,Water bottle,No,1
+33,16-Sep-2025,Tuesday,September,₹255,Food,Grocery items,No,1
+34,16-Sep-2025,Tuesday,September,₹45,Bills,Water bottle,No,1
+35,16-Sep-2025,Tuesday,September,₹430,Entertainment,Gaming recharge,No,1
+36,18-Sep-2025,Thursday,September,₹230,Bills,Electricity (hostel share),No,1
+37,18-Sep-2025,Thursday,September,₹330,Entertainment,Movie ticket,No,1
+38,19-Sep-2025,Friday,September,₹180,Shopping,Stationery shopping,No,1
+39,19-Sep-2025,Friday,September,₹245,Bills,Medicine/health,No,1
+40,19-Sep-2025,Friday,September,₹155,Food,Canteen lunch,No,1
+41,20-Sep-2025,Saturday,September,₹320,Entertainment,Bowling/games,Yes,1
+42,20-Sep-2025,Saturday,September,₹170,Food,Dinner outside,Yes,1
+43,21-Sep-2025,Sunday,September,₹760,Shopping,Electronics accessories,Yes,1
+44,21-Sep-2025,Sunday,September,₹65,College,Printing & xerox,Yes,1
+45,21-Sep-2025,Sunday,September,₹45,Bills,Library fine,Yes,1
+46,21-Sep-2025,Sunday,September,₹280,Entertainment,OTT subscription,Yes,1
+47,21-Sep-2025,Sunday,September,₹425,Food,Grocery items,Yes,1
+48,22-Sep-2025,Monday,September,₹95,Travel,Ola/Uber ride,No,1
+49,22-Sep-2025,Monday,September,₹210,Food,Grocery items,No,1
+50,22-Sep-2025,Monday,September,"₹1,100",College,Exam fee,No,1
+51,23-Sep-2025,Tuesday,September,₹110,Food,Canteen lunch,No,1
+52,26-Sep-2025,Friday,September,₹240,Shopping,Stationery shopping,No,1
+53,27-Sep-2025,Saturday,September,₹450,Shopping,Electronics accessories,Yes,1
+54,27-Sep-2025,Saturday,September,₹310,Bills,Subscription renewal,Yes,1
+55,27-Sep-2025,Saturday,September,₹320,Food,Dinner outside,Yes,1
+56,28-Sep-2025,Sunday,September,₹90,Travel,Auto rickshaw,Yes,1
+57,28-Sep-2025,Sunday,September,₹255,Food,Grocery items,Yes,1
+58,28-Sep-2025,Sunday,September,₹200,Shopping,Stationery shopping,Yes,1
+59,28-Sep-2025,Sunday,September,₹75,Food,Street food,Yes,1
+60,29-Sep-2025,Monday,September,₹165,Entertainment,Sports activity,No,1
+61,30-Sep-2025,Tuesday,September,₹165,Food,Canteen lunch,No,1
+62,30-Sep-2025,Tuesday,September,₹50,Travel,Auto rickshaw,No,1
+63,30-Sep-2025,Tuesday,September,₹100,Bills,Laundry,No,1
+64,01-Oct-2025,Wednesday,October,₹180,Travel,Ola/Uber ride,No,2
+65,02-Oct-2025,Thursday,October,₹335,College,Uniform/ID card,No,2
+66,02-Oct-2025,Thursday,October,₹40,Travel,Ferry/local bus,No,2
+67,02-Oct-2025,Thursday,October,₹85,Food,Cold coffee/tea,No,2
+68,03-Oct-2025,Friday,October,₹250,Shopping,Stationery shopping,No,2
+69,03-Oct-2025,Friday,October,₹95,Travel,Ola/Uber ride,No,2
+70,03-Oct-2025,Friday,October,₹270,College,Stationery,No,2
+71,03-Oct-2025,Friday,October,₹155,Food,Canteen lunch,No,2
+72,04-Oct-2025,Saturday,October,"₹1,370",Shopping,Shoes,Yes,2
+73,04-Oct-2025,Saturday,October,₹40,College,Printing & xerox,Yes,2
+74,04-Oct-2025,Saturday,October,₹320,Food,Dinner outside,Yes,2
+75,04-Oct-2025,Saturday,October,₹200,Entertainment,OTT subscription,Yes,2
+76,04-Oct-2025,Saturday,October,₹35,Food,Snacks,Yes,2
+77,05-Oct-2025,Sunday,October,₹305,Shopping,Room essentials,Yes,2
+78,05-Oct-2025,Sunday,October,₹110,Bills,Medicine/health,Yes,2
+79,05-Oct-2025,Sunday,October,₹400,Entertainment,Bowling/games,Yes,2
+80,05-Oct-2025,Sunday,October,₹735,Food,Mess fee (partial),Yes,2
+81,06-Oct-2025,Monday,October,₹140,Food,Canteen lunch,No,2
+82,07-Oct-2025,Tuesday,October,"₹1,050",Shopping,Shoes,No,2
+83,07-Oct-2025,Tuesday,October,₹95,Food,Snacks,No,2
+84,08-Oct-2025,Wednesday,October,₹305,Entertainment,Movie ticket,No,2
+85,09-Oct-2025,Thursday,October,₹855,College,Online course fee,No,2
+86,10-Oct-2025,Friday,October,₹865,Shopping,T-shirt,No,2
+87,10-Oct-2025,Friday,October,₹25,Bills,Water bottle,No,2
+88,11-Oct-2025,Saturday,October,₹85,Food,Breakfast,Yes,2
+89,11-Oct-2025,Saturday,October,₹510,Shopping,Room essentials,Yes,2
+90,11-Oct-2025,Saturday,October,₹305,Food,Grocery items,Yes,2
+91,12-Oct-2025,Sunday,October,"₹1,150",Shopping,Shoes,Yes,2
+92,12-Oct-2025,Sunday,October,₹170,Travel,Metro card recharge,Yes,2
+93,12-Oct-2025,Sunday,October,₹200,Entertainment,Cafe outing,Yes,2
+94,12-Oct-2025,Sunday,October,₹595,Food,Grocery items,Yes,2
+95,12-Oct-2025,Sunday,October,₹580,Food,Mess fee (partial),Yes,2
+96,13-Oct-2025,Monday,October,₹415,Shopping,T-shirt,No,2
+97,13-Oct-2025,Monday,October,₹275,Travel,Bus pass recharge,No,2
+98,14-Oct-2025,Tuesday,October,₹420,Entertainment,Gaming recharge,No,2
+99,14-Oct-2025,Tuesday,October,₹170,Shopping,Accessories,No,2
+100,15-Oct-2025,Wednesday,October,₹305,Food,Grocery items,No,2
+101,16-Oct-2025,Thursday,October,₹250,Bills,Medicine/health,No,2
+102,16-Oct-2025,Thursday,October,₹80,Food,Cold coffee/tea,No,2
+103,17-Oct-2025,Friday,October,₹80,College,Printing & xerox,No,2
+104,17-Oct-2025,Friday,October,₹245,Bills,Internet bill,No,2
+105,18-Oct-2025,Saturday,October,₹245,Bills,Mobile recharge,Yes,2
+106,18-Oct-2025,Saturday,October,₹300,College,Stationery,Yes,2
+107,18-Oct-2025,Saturday,October,₹155,Entertainment,Sports activity,Yes,2
+108,18-Oct-2025,Saturday,October,₹90,Food,Snacks,Yes,2
+109,18-Oct-2025,Saturday,October,₹60,Food,Snacks,Yes,2
+110,19-Oct-2025,Sunday,October,₹320,Entertainment,Movie ticket,Yes,2
+111,19-Oct-2025,Sunday,October,₹215,Bills,Medicine/health,Yes,2
+112,20-Oct-2025,Monday,October,₹420,Shopping,T-shirt,No,2
+113,20-Oct-2025,Monday,October,₹290,Entertainment,Bowling/games,No,2
+114,21-Oct-2025,Tuesday,October,₹400,Entertainment,Movie ticket,No,2
+115,21-Oct-2025,Tuesday,October,₹575,Food,Grocery items,No,2
+116,22-Oct-2025,Wednesday,October,₹395,Travel,Bus pass recharge,No,2
+117,22-Oct-2025,Wednesday,October,₹230,Shopping,Stationery shopping,No,2
+118,24-Oct-2025,Friday,October,₹285,Shopping,Stationery shopping,No,2
+119,25-Oct-2025,Saturday,October,₹460,Shopping,Room essentials,Yes,2
+120,25-Oct-2025,Saturday,October,₹410,Entertainment,Bowling/games,Yes,2
+121,25-Oct-2025,Saturday,October,₹405,Food,Grocery items,Yes,2
+122,25-Oct-2025,Saturday,October,₹55,Bills,Water bottle,Yes,2
+123,25-Oct-2025,Saturday,October,₹80,Food,Cold coffee/tea,Yes,2
+124,26-Oct-2025,Sunday,October,₹480,College,Uniform/ID card,Yes,2
+125,26-Oct-2025,Sunday,October,₹610,Shopping,T-shirt,Yes,2
+126,26-Oct-2025,Sunday,October,₹305,Entertainment,Bowling/games,Yes,2
+127,27-Oct-2025,Monday,October,₹325,Bills,Subscription renewal,No,2
+128,27-Oct-2025,Monday,October,₹270,Entertainment,Sports activity,No,2
+129,28-Oct-2025,Tuesday,October,₹435,Travel,Train ticket,No,2
+130,30-Oct-2025,Thursday,October,₹75,Bills,Medicine/health,No,2
+131,30-Oct-2025,Thursday,October,₹260,Shopping,Stationery shopping,No,2
+132,31-Oct-2025,Friday,October,₹35,College,Printing & xerox,No,2
+133,31-Oct-2025,Friday,October,₹140,Food,Street food,No,2
+134,01-Nov-2025,Saturday,November,₹265,Travel,Ola/Uber ride,Yes,3
+135,02-Nov-2025,Sunday,November,₹350,Bills,Mobile recharge,Yes,3
+136,02-Nov-2025,Sunday,November,₹55,Food,Cold coffee/tea,Yes,3
+137,02-Nov-2025,Sunday,November,₹65,Food,Street food,Yes,3
+138,03-Nov-2025,Monday,November,₹110,Food,Breakfast,No,3
+139,03-Nov-2025,Monday,November,"₹1,470",Travel,Weekend trip,No,3
+140,04-Nov-2025,Tuesday,November,₹240,Travel,Metro card recharge,No,3
+141,04-Nov-2025,Tuesday,November,₹360,Shopping,Electronics accessories,No,3
+142,05-Nov-2025,Wednesday,November,₹275,Travel,Petrol (bike),No,3
+143,05-Nov-2025,Wednesday,November,₹55,Bills,Water bottle,No,3
+144,06-Nov-2025,Thursday,November,₹650,College,Books,No,3
+145,07-Nov-2025,Friday,November,₹670,Food,Mess fee (partial),No,3
+146,08-Nov-2025,Saturday,November,₹555,College,Uniform/ID card,Yes,3
+147,08-Nov-2025,Saturday,November,₹280,Bills,Electricity (hostel share),Yes,3
+148,08-Nov-2025,Saturday,November,₹130,Shopping,Stationery shopping,Yes,3
+149,09-Nov-2025,Sunday,November,₹90,Food,Cold coffee/tea,Yes,3
+150,09-Nov-2025,Sunday,November,₹300,College,Stationery,Yes,3
+151,09-Nov-2025,Sunday,November,₹220,Travel,Metro card recharge,Yes,3
+152,09-Nov-2025,Sunday,November,₹350,Food,Grocery items,Yes,3
+153,10-Nov-2025,Monday,November,₹205,Travel,Ola/Uber ride,No,3
+154,10-Nov-2025,Monday,November,₹240,Shopping,Stationery shopping,No,3
+155,11-Nov-2025,Tuesday,November,₹60,Food,Cold coffee/tea,No,3
+156,12-Nov-2025,Wednesday,November,₹80,Travel,Ferry/local bus,No,3
+157,12-Nov-2025,Wednesday,November,₹100,College,Printing & xerox,No,3
+158,14-Nov-2025,Friday,November,₹385,Shopping,T-shirt,No,3
+159,15-Nov-2025,Saturday,November,₹310,Food,Grocery items,Yes,3
+160,15-Nov-2025,Saturday,November,₹185,Entertainment,Sports activity,Yes,3
+161,15-Nov-2025,Saturday,November,"₹1,280",Travel,Weekend trip,Yes,3
+162,16-Nov-2025,Sunday,November,₹135,Travel,Auto rickshaw,Yes,3
+163,16-Nov-2025,Sunday,November,₹380,Entertainment,Cafe outing,Yes,3
+164,16-Nov-2025,Sunday,November,₹40,Food,Snacks,Yes,3
+165,16-Nov-2025,Sunday,November,₹275,College,Stationery,Yes,3
+166,16-Nov-2025,Sunday,November,₹55,Food,Snacks,Yes,3
+167,17-Nov-2025,Monday,November,₹165,Shopping,Stationery shopping,No,3
+168,17-Nov-2025,Monday,November,₹415,College,Online course fee,No,3
+169,18-Nov-2025,Tuesday,November,₹575,College,Books,No,3
+170,18-Nov-2025,Tuesday,November,₹410,Travel,Train ticket,No,3
+171,19-Nov-2025,Wednesday,November,₹180,Bills,Electricity (hostel share),No,3
+172,19-Nov-2025,Wednesday,November,₹300,Food,Dinner outside,No,3
+173,21-Nov-2025,Friday,November,₹70,Bills,Library fine,No,3
+174,22-Nov-2025,Saturday,November,₹60,Bills,Water bottle,Yes,3
+175,22-Nov-2025,Saturday,November,₹440,College,Lab materials,Yes,3
+176,22-Nov-2025,Saturday,November,₹125,Food,Canteen lunch,Yes,3
+177,23-Nov-2025,Sunday,November,₹55,Bills,Medicine/health,Yes,3
+178,24-Nov-2025,Monday,November,₹525,Food,Grocery items,No,3
+179,24-Nov-2025,Monday,November,₹65,Travel,Ferry/local bus,No,3
+180,25-Nov-2025,Tuesday,November,₹750,College,Books,No,3
+181,26-Nov-2025,Wednesday,November,₹315,Travel,Petrol (bike),No,3
+182,26-Nov-2025,Wednesday,November,₹185,Bills,Laundry,No,3
+183,27-Nov-2025,Thursday,November,₹245,Entertainment,Sports activity,No,3
+184,27-Nov-2025,Thursday,November,₹185,Travel,Metro card recharge,No,3
+185,27-Nov-2025,Thursday,November,₹205,College,Stationery,No,3
+186,28-Nov-2025,Friday,November,₹230,College,Project supplies,No,3
+187,28-Nov-2025,Friday,November,₹785,Travel,Weekend trip,No,3
+188,28-Nov-2025,Friday,November,₹55,Bills,Water bottle,No,3
+189,28-Nov-2025,Friday,November,₹40,Food,Snacks,No,3
+190,29-Nov-2025,Saturday,November,₹660,Shopping,Electronics accessories,Yes,3
+191,29-Nov-2025,Saturday,November,₹105,College,Stationery,Yes,3
+192,29-Nov-2025,Saturday,November,₹265,Travel,Petrol (bike),Yes,3
+193,30-Nov-2025,Sunday,November,₹480,Entertainment,Picnic with friends,Yes,3
+194,30-Nov-2025,Sunday,November,₹860,Travel,Weekend trip,Yes,3
+195,30-Nov-2025,Sunday,November,₹240,Bills,Subscription renewal,Yes,3
+196,30-Nov-2025,Sunday,November,₹45,Food,Snacks,Yes,3
+197,01-Dec-2025,Monday,December,₹300,Entertainment,Gaming recharge,No,4
+198,01-Dec-2025,Monday,December,₹90,Food,Snacks,No,4
+199,02-Dec-2025,Tuesday,December,₹250,Shopping,Room essentials,No,4
+200,03-Dec-2025,Wednesday,December,₹390,Entertainment,Music concert/event,No,4
+201,03-Dec-2025,Wednesday,December,₹215,College,Books,No,4
+202,04-Dec-2025,Thursday,December,₹95,College,Stationery,No,4
+203,04-Dec-2025,Thursday,December,₹265,Entertainment,Bowling/games,No,4
+204,05-Dec-2025,Friday,December,₹115,Travel,Auto rickshaw,No,4
+205,05-Dec-2025,Friday,December,₹740,Food,Mess fee (partial),No,4
+206,06-Dec-2025,Saturday,December,₹450,Entertainment,Picnic with friends,Yes,4
+207,06-Dec-2025,Saturday,December,₹495,Travel,Bus pass recharge,Yes,4
+208,06-Dec-2025,Saturday,December,₹100,Food,Canteen lunch,Yes,4
+209,06-Dec-2025,Saturday,December,₹565,Shopping,Accessories,Yes,4
+210,07-Dec-2025,Sunday,December,₹95,Food,Snacks,Yes,4
+211,07-Dec-2025,Sunday,December,₹215,Shopping,Toiletries,Yes,4
+212,07-Dec-2025,Sunday,December,₹40,Travel,Ferry/local bus,Yes,4
+213,07-Dec-2025,Sunday,December,₹355,Entertainment,Picnic with friends,Yes,4
+214,09-Dec-2025,Tuesday,December,₹540,Food,Mess fee (partial),No,4
+215,09-Dec-2025,Tuesday,December,₹60,College,Printing & xerox,No,4
+216,09-Dec-2025,Tuesday,December,₹430,Shopping,Accessories,No,4
+217,12-Dec-2025,Friday,December,₹500,Shopping,Electronics accessories,No,4
+218,12-Dec-2025,Friday,December,₹645,Food,Mess fee (partial),No,4
+219,13-Dec-2025,Saturday,December,₹135,Bills,Laundry,Yes,4
+220,13-Dec-2025,Saturday,December,₹430,College,Lab materials,Yes,4
+221,13-Dec-2025,Saturday,December,₹265,Entertainment,OTT subscription,Yes,4
+222,13-Dec-2025,Saturday,December,₹570,Food,Mess fee (partial),Yes,4
+223,14-Dec-2025,Sunday,December,₹425,Entertainment,Bowling/games,Yes,4
+224,14-Dec-2025,Sunday,December,₹980,Shopping,Shoes,Yes,4
+225,15-Dec-2025,Monday,December,₹210,Entertainment,Sports activity,No,4
+226,15-Dec-2025,Monday,December,"₹1,110",Shopping,Shoes,No,4
+227,17-Dec-2025,Wednesday,December,₹215,Entertainment,Bowling/games,No,4
+228,19-Dec-2025,Friday,December,₹495,Shopping,Room essentials,No,4
+229,19-Dec-2025,Friday,December,₹395,Bills,Internet bill,No,4
+230,19-Dec-2025,Friday,December,₹110,Food,Breakfast,No,4
+231,20-Dec-2025,Saturday,December,₹295,Shopping,Electronics accessories,Yes,4
+232,20-Dec-2025,Saturday,December,₹40,Travel,Ferry/local bus,Yes,4
+233,21-Dec-2025,Sunday,December,₹555,College,Uniform/ID card,Yes,4
+234,21-Dec-2025,Sunday,December,₹175,Entertainment,Sports activity,Yes,4
+235,22-Dec-2025,Monday,December,₹765,Shopping,T-shirt,No,4
+236,24-Dec-2025,Wednesday,December,₹70,Food,Cold coffee/tea,No,4
+237,25-Dec-2025,Thursday,December,₹110,Food,Street food,No,4
+238,25-Dec-2025,Thursday,December,₹490,Shopping,T-shirt,No,4
+239,26-Dec-2025,Friday,December,₹980,Shopping,Electronics accessories,No,4
+240,26-Dec-2025,Friday,December,₹65,Travel,Auto rickshaw,No,4
+241,26-Dec-2025,Friday,December,₹85,Food,Breakfast,No,4
+242,27-Dec-2025,Saturday,December,₹90,Food,Breakfast,Yes,4
+243,27-Dec-2025,Saturday,December,₹340,Bills,Internet bill,Yes,4
+244,27-Dec-2025,Saturday,December,₹245,College,Uniform/ID card,Yes,4
+245,27-Dec-2025,Saturday,December,₹270,Food,Dinner outside,Yes,4
+246,28-Dec-2025,Sunday,December,₹625,College,Books,Yes,4
+247,28-Dec-2025,Sunday,December,₹50,Travel,Ferry/local bus,Yes,4
+248,28-Dec-2025,Sunday,December,₹215,Entertainment,OTT subscription,Yes,4
+249,29-Dec-2025,Monday,December,₹590,Shopping,Accessories,No,4
+250,31-Dec-2025,Wednesday,December,₹150,Travel,Petrol (bike),No,4
+251,31-Dec-2025,Wednesday,December,₹350,Entertainment,Bowling/games,No,4
+252,01-Jan-2026,Thursday,January,₹380,Shopping,Accessories,No,4
+253,01-Jan-2026,Thursday,January,₹40,Travel,Ferry/local bus,No,4
+254,02-Jan-2026,Friday,January,₹215,Shopping,Toiletries,No,4
+255,03-Jan-2026,Saturday,January,₹220,College,Uniform/ID card,Yes,4
+256,03-Jan-2026,Saturday,January,₹175,Shopping,Haircut,Yes,4
+257,03-Jan-2026,Saturday,January,₹65,Travel,Ferry/local bus,Yes,4
+258,03-Jan-2026,Saturday,January,₹65,Food,Cold coffee/tea,Yes,4
+259,04-Jan-2026,Sunday,January,₹95,College,Printing & xerox,Yes,4
+260,04-Jan-2026,Sunday,January,"₹1,390",Travel,Weekend trip,Yes,4
+261,04-Jan-2026,Sunday,January,₹260,Food,Dinner outside,Yes,4
+262,04-Jan-2026,Sunday,January,₹60,Food,Street food,Yes,4

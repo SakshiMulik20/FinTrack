@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}FinTrack - Smart Personal Finance{% endblock %}
+
+{% block content %}
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="/">
+            <span style="color:#6c63ff;">Fin</span>Track
+        </a>
+        <div class="ms-auto">
+            <a href="/login" class="btn btn-outline-primary me-2">Login</a>
+            <a href="/register" class="btn btn-primary">Get Started</a>
+        </div>
+    </div>
+</nav>
+
+<section class="hero-section d-flex align-items-center" style="min-height:90vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+    <div class="container text-center text-white">
+        <h1 class="display-3 fw-bold mb-4">Take Control of Your Finances</h1>
+        <p class="lead mb-5 opacity-75">Track expenses, set budgets, forecast your future — all in one place. Powered by real Machine Learning.</p>
+        <a href="/register" class="btn btn-light btn-lg px-5 py-3 fw-bold" style="color:#6c63ff; border-radius:50px;">
+            Get Started for Free <i class="fas fa-arrow-right ms-2"></i>
+        </a>
+    </div>
+</section>
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row g-4 text-center">
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm p-4 h-100">
+                    <i class="fas fa-chart-pie fa-2x mb-3" style="color:#6c63ff;"></i>
+                    <h5 class="fw-bold">Smart Analytics</h5>
+                    <p class="text-muted small">Visual charts showing exactly where your money goes</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm p-4 h-100">
+                    <i class="fas fa-brain fa-2x mb-3" style="color:#6c63ff;"></i>
+                    <h5 class="fw-bold">ML Predictions</h5>
+                    <p class="text-muted small">Machine learning forecasts your future spending patterns</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm p-4 h-100">
+                    <i class="fas fa-camera fa-2x mb-3" style="color:#6c63ff;"></i>
+                    <h5 class="fw-bold">Receipt Scanning</h5>
+                    <p class="text-muted small">Snap a photo of any receipt — we extract the details automatically</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm p-4 h-100">
+                    <i class="fas fa-bell fa-2x mb-3" style="color:#6c63ff;"></i>
+                    <h5 class="fw-bold">Budget Alerts</h5>
+                    <p class="text-muted small">Get email alerts before you overspend your monthly budget</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

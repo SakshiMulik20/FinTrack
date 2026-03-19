@@ -1,0 +1,91 @@
+
+
+{% extends "base.html" %}
+{% block title %}Add Transaction - FinTrack{% endblock %}
+
+{% block content %}
+<div class="d-flex">
+    <div class="sidebar d-flex flex-column p-3" style="width:240px; min-height:100vh; background:#fff; border-right:1px solid #eee;">
+        <a class="navbar-brand fw-bold mb-4 ps-2" href="/"><span style="color:#6c63ff;">Fin</span>Track</a>
+        <nav class="nav flex-column gap-1">
+            <a href="/dashboard" class="nav-link sidebar-link"><i class="fas fa-home me-2"></i> Dashboard</a>
+            <a href="/transactions" class="nav-link sidebar-link active"><i class="fas fa-exchange-alt me-2"></i> Transactions</a>
+            <a href="/budgets" class="nav-link sidebar-link"><i class="fas fa-wallet me-2"></i> Budgets</a>
+            <a href="/goals" class="nav-link sidebar-link"><i class="fas fa-bullseye me-2"></i> Savings Goals</a>
+            <a href="/analytics" class="nav-link sidebar-link"><i class="fas fa-chart-bar me-2"></i> Analytics</a>
+            <a href="/recurring" class="nav-link sidebar-link"><i class="fas fa-redo me-2"></i> Recurring</a>
+        </nav>
+        <div class="mt-auto">
+            <a href="/logout" class="nav-link sidebar-link text-danger"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
+        </div>
+    </div>
+
+    <div class="flex-grow-1 p-4" style="background:#f8f9fa; max-width:700px;">
+        <h1 class="fw-bold mb-4">Add Transaction</h1>
+
+        <a href="/receipts/scan" class="btn w-100 py-3 mb-4 fw-bold text-white"
+           style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border:none; border-radius:12px;">
+            <i class="fas fa-camera me-2"></i> Scan Receipt with AI
+        </a>
+
+        <div class="card border-0 shadow-sm p-4">
+            <form method="POST" action="/transactions/add">
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Type</label>
+                    <select name="transaction_type" class="form-select form-select-lg">
+                        <option value="expense">Expense</option>
+                        <option value="income">Income</option>
+                    </select>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col">
+                        <label class="form-label fw-semibold">Amount (₹)</label>
+                        <input type="number" name="amount" step="0.01" min="0"
+                               class="form-control form-control-lg" placeholder="0.00" required>
+                    </div>
+                    <div class="col">
+                        <label class="form-label fw-semibold">Account</label>
+                        <select name="account_id" class="form-select form-select-lg">
+                            {% for account in accounts %}
+                            <option value="{{ account.id }}">
+                                {{ account.name }} (₹{{ "%.2f"|format(account.balance) }})
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Category</label>
+                    <select name="category_id" class="form-select form-select-lg">
+                        <option value="">Select category</option>
+                        {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.icon }} {{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Date</label>
+                    <input type="date" name="transaction_date" value="{{ today }}"
+                           class="form-control form-control-lg" required>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Description</label>
+                    <input type="text" name="description" class="form-control form-control-lg"
+                           placeholder="Enter description">
+                </div>
+
+                <div class="d-flex gap-3 mt-4">
+                    <a href="/transactions" class="btn btn-outline-secondary flex-grow-1 py-3">Cancel</a>
+                    <button type="submit" class="btn btn-dark flex-grow-1 py-3 fw-bold">
+                        Create Transaction
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

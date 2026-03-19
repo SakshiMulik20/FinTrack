@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}Budgets - FinTrack{% endblock %}
+
+{% block content %}
+<div class="d-flex">
+    <div class="sidebar d-flex flex-column p-3" style="width:240px; min-height:100vh; background:#fff; border-right:1px solid #eee;">
+        <a class="navbar-brand fw-bold mb-4 ps-2" href="/"><span style="color:#6c63ff;">Fin</span>Track</a>
+        <nav class="nav flex-column gap-1">
+            <a href="/dashboard" class="nav-link sidebar-link"><i class="fas fa-home me-2"></i> Dashboard</a>
+            <a href="/transactions" class="nav-link sidebar-link"><i class="fas fa-exchange-alt me-2"></i> Transactions</a>
+            <a href="/budgets" class="nav-link sidebar-link active"><i class="fas fa-wallet me-2"></i> Budgets</a>
+            <a href="/goals" class="nav-link sidebar-link"><i class="fas fa-bullseye me-2"></i> Savings Goals</a>
+            <a href="/analytics" class="nav-link sidebar-link"><i class="fas fa-chart-bar me-2"></i> Analytics</a>
+            <a href="/recurring" class="nav-link sidebar-link"><i class="fas fa-redo me-2"></i> Recurring</a>
+        </nav>
+        <div class="mt-auto">
+            <a href="/logout" class="nav-link sidebar-link text-danger"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
+        </div>
+    </div>
+
+    <div class="flex-grow-1 p-4" style="background:#f8f9fa;">
+        <h1 class="fw-bold mb-4">Budgets — {{ now.strftime('%B %Y') }}</h1>
+
+        <!-- Set Budget Form -->
+        <div class="card border-0 shadow-sm p-4 mb-4">
+            <h6 class="fw-bold mb-3">Set a Budget</h6>
+            <form method="POST" action="/budgets" class="row g-3 align-items-end">
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Category (leave blank for overall)</label>
+                    <select name="category_id" class="form-select">
+                        <option value="">Overall Monthly Budget</option>
+                        {% for cat in categories %}
+                        <option value="{{ cat.id }}">{{ cat.icon }} {{ cat.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Budget Limit (₹)</label>
+                    <input type="number" name="amount" step="0.01" min="0"
+                           class="form-control" placeholder="e.g. 50000" required>
+                </div>
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-save me-2"></i>Save Budget
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Budget List -->
+        {% if budget_data %}
+            {% for item in budget_data %}
+            <div class="card border-0 shadow-sm p-4 mb-3">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <h6 class="fw-bold mb-0">
+                            {% if item.budget.category %}
+                                {{ item.budget.category.icon }} {{ item.budget.category.name }}
+                            {% else %}
+                                🏦 Overall Monthly Budget
+                            {% endif %}
+                        </h6>
+                        <small class="text-muted">
+                            ₹{{ "%.2f"|format(item.spent) }} spent of ₹{{ "%.2f"|format(item.budget.amount_limit) }}
+                            · ₹{{ "%.2f"|format(item.remaining) }} remaining
+                        </small>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge {% if item.percent >= 90 %}bg-danger{% elif item.percent >= 70 %}bg-warning text-dark{% else %}bg-success{% endif %}">
+                            {{ item.percent }}%
+                        </span>
+                        <form method="POST" action="/budgets/delete/{{ item.budget.id }}"
+                              onsubmit="return confirm('Remove this budget?')">
+                            <button class="btn btn-sm btn-outline-danger">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="progress" style="height:10px; border-radius:10px;">
+                    <div class="progress-bar {% if item.percent >= 90 %}bg-danger{% elif item.percent >= 70 %}bg-warning{% else %}bg-primary{% endif %}"
+                         style="width:{{ item.percent }}%; border-radius:10px;"></div>
+                </div>
+                {% if item.percent >= 90 %}
+                <div class="alert alert-danger mt-3 mb-0 py-2 small">
+                    <i class="fas fa-exclamation-triangle me-1"></i>
+                    You've used {{ item.percent }}% of this budget!
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="card border-0 shadow-sm p-5 text-center text-muted">
+                <i class="fas fa-wallet fa-3x mb-3"></i>
+                <p>No budgets set for {{ now.strftime('%B %Y') }}. Set one above!</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

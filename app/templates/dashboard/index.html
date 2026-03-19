@@ -1,0 +1,274 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - FinTrack{% endblock %}
+
+{% block content %}
+<div class="d-flex">
+
+<div class="sidebar d-flex flex-column p-3" style="width:240px;min-height:100vh;background:#fff;border-right:1px solid #eee;position:sticky;top:0;height:100vh;">
+<a class="navbar-brand fw-bold mb-4 ps-2" href="/"><span style="color:#6c63ff;">Fin</span>Track</a>
+<nav class="nav flex-column gap-1">
+<a href="/dashboard" class="nav-link sidebar-link active"><i class="fas fa-home me-2"></i>Dashboard</a>
+<a href="/transactions" class="nav-link sidebar-link"><i class="fas fa-exchange-alt me-2"></i>Transactions</a>
+<a href="/budgets" class="nav-link sidebar-link"><i class="fas fa-wallet me-2"></i>Budgets</a>
+<a href="/goals" class="nav-link sidebar-link"><i class="fas fa-bullseye me-2"></i>Savings Goals</a>
+<a href="/analytics" class="nav-link sidebar-link"><i class="fas fa-chart-bar me-2"></i>Analytics</a>
+<a href="/recurring" class="nav-link sidebar-link"><i class="fas fa-redo me-2"></i>Recurring</a>
+</nav>
+<div class="mt-auto">
+<a href="/logout" class="nav-link sidebar-link text-danger"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
+</div>
+</div>
+
+<div class="flex-grow-1" style="background:#f8f9fa;">
+
+<div class="d-flex justify-content-between align-items-center px-4 py-3 bg-white border-bottom shadow-sm">
+<span class="fw-semibold text-muted"><i class="fas fa-home me-2" style="color:#6c63ff;"></i>Dashboard</span>
+<div class="d-flex align-items-center gap-3">
+<a href="/transactions/add" class="btn btn-dark px-4 fw-semibold"><i class="fas fa-plus me-2"></i>Add Transaction</a>
+<div class="dropdown">
+<button class="btn p-0 border-0 rounded-circle" data-bs-toggle="dropdown">
+{% if current_user.profile_photo %}
+    <img src="{{ url_for('static', filename='uploads/' + current_user.profile_photo) }}"
+         class="rounded-circle object-fit-cover"
+         style="width:40px; height:40px;" alt="Profile">
+{% else %}
+    <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold text-white"
+         style="width:40px;height:40px;background:#6c63ff;font-size:1rem;">
+        {{ current_user.full_name[0].upper() }}
+    </div>
+{% endif %}
+</button>
+<ul class="dropdown-menu dropdown-menu-end shadow border-0 p-2" style="min-width:260px;">
+<li class="px-3 py-2 d-flex align-items-center gap-3">
+{% if current_user.profile_photo %}
+    <img src="{{ url_for('static', filename='uploads/' + current_user.profile_photo) }}"
+         class="rounded-circle object-fit-cover"
+         style="width:40px; height:40px;" alt="Profile">
+{% else %}
+    <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold text-white"
+         style="width:40px; height:40px; background:#6c63ff; font-size:1rem;">
+        {{ current_user.full_name[0].upper() }}
+    </div>
+{% endif %}
+<div>
+<div class="fw-bold" style="font-size:0.9rem;">{{ current_user.full_name }}</div>
+<div class="text-muted" style="font-size:0.78rem;">{{ current_user.email }}</div>
+</div>
+</li>
+<li><hr class="dropdown-divider"></li>
+<li><a class="dropdown-item rounded px-3 py-2" href="/account/settings"><i class="fas fa-cog me-2 text-muted"></i>Manage account</a></li>
+<li><a class="dropdown-item rounded px-3 py-2 text-danger" href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Sign out</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="p-4">
+<h1 class="fw-bold mb-4">Dashboard</h1>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endfor %}
+{% endif %}
+{% endwith %}
+
+<!-- Budget -->
+<div class="card border-0 shadow-sm p-4 mb-4">
+{% if default_account %}
+<div class="d-flex justify-content-between align-items-center mb-2">
+<span class="fw-semibold text-muted">Monthly Budget (Default Account: {{ default_account.name }})</span>
+<a href="/budgets" class="text-muted"><i class="fas fa-pen small"></i></a>
+</div>
+<div class="d-flex justify-content-between mb-2">
+<span class="fw-bold">₹{{ "%.2f"|format(total_spent) }} of ₹{{ "%.2f"|format(budget_limit) }} spent</span>
+<span class="text-muted small">{{ budget_percent }}% used</span>
+</div>
+<div class="progress" style="height:10px;border-radius:10px;">
+<div class="progress-bar {% if budget_percent >= 90 %}bg-danger{% elif budget_percent >= 70 %}bg-warning{% else %}bg-primary{% endif %}" style="width:{{ budget_percent }}%;border-radius:10px;"></div>
+</div>
+{% else %}
+<div class="d-flex justify-content-between align-items-center">
+<span class="text-muted">No accounts found.</span>
+<a href="/accounts/add" class="btn btn-sm btn-primary">Add Account</a>
+</div>
+{% endif %}
+</div>
+
+<!-- AI Prediction Card -->
+{% if prediction %}
+<div class="card border-0 shadow-sm mb-4" style="border-radius:12px; overflow:hidden;">
+    <div class="card-body p-0">
+        <div class="d-flex align-items-stretch">
+            <div class="p-4 flex-grow-1">
+                <div class="d-flex align-items-center gap-2 mb-1">
+                    <i class="fas fa-robot" style="color:#6c63ff;"></i>
+                    <span class="fw-semibold text-muted" style="font-size:0.82rem; text-transform:uppercase; letter-spacing:0.5px;">AI Prediction</span>
+                </div>
+                <h6 class="fw-bold mb-1" style="font-size:1rem;">{{ prediction.next_month }}</h6>
+                <p class="mb-0 text-muted" style="font-size:0.88rem;">
+                    Next month, your expenses might be around
+                    <span class="fw-bold text-danger">₹{{ "{:,.0f}".format(prediction.total_expense) }}</span>
+                </p>
+                {% if prediction.savings >= 0 %}
+                <p class="mb-0 mt-1" style="font-size:0.85rem; color:#27ae60;">
+                    <i class="fas fa-piggy-bank me-1"></i> You could save around ₹{{ "{:,.0f}".format(prediction.savings) }}
+                </p>
+                {% else %}
+                <p class="mb-0 mt-1" style="font-size:0.85rem; color:#e74c3c;">
+                    <i class="fas fa-exclamation-circle me-1"></i> You may overspend by ₹{{ "{:,.0f}".format(prediction.savings|abs) }}
+                </p>
+                {% endif %}
+            </div>
+            <div class="d-flex align-items-center px-4 border-start">
+                <form method="POST" action="/dashboard/send-report">
+                    <button type="submit" class="btn btn-sm px-3"
+                            style="background:#f3f2ff; color:#6c63ff; border:none; font-size:0.82rem; white-space:nowrap;">
+                        <i class="fas fa-envelope me-1"></i> Send Full Report
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Transactions + Chart -->
+<div class="row g-4 mb-4">
+<div class="col-lg-6">
+<div class="card border-0 shadow-sm p-4 h-100">
+<div class="d-flex justify-content-between align-items-center mb-3">
+<h6 class="fw-bold mb-0">Recent Transactions</h6>
+<div class="d-flex align-items-center gap-2">
+<select class="form-select form-select-sm" style="width:140px;" onchange="window.location='/dashboard?account_id='+this.value">
+{% for a in accounts %}
+<option value="{{ a.id }}" {% if view_account and a.id == view_account.id %}selected{% endif %}>{{ a.name }}</option>
+{% endfor %}
+</select>
+<a href="/transactions" class="btn btn-sm btn-outline-primary">View All</a>
+</div>
+</div>
+{% if recent_transactions %}
+{% for t in recent_transactions %}
+<div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+<div>
+<div class="fw-semibold small">{{ t.description or 'Transaction' }}</div>
+<div class="text-muted" style="font-size:0.75rem;">{{ t.transaction_date.strftime('%b %d, %Y') }}</div>
+</div>
+<span class="fw-bold {% if t.transaction_type == 'income' %}text-success{% else %}text-danger{% endif %}">
+{% if t.transaction_type == 'income' %}+{% else %}-{% endif %}₹{{ "%.2f"|format(t.amount) }}
+</span>
+</div>
+{% endfor %}
+{% else %}
+<div class="text-center text-muted py-4">
+<i class="fas fa-receipt fa-2x mb-2"></i>
+<p class="small">No transactions yet. <a href="/transactions/add">Add one!</a></p>
+</div>
+{% endif %}
+</div>
+</div>
+<div class="col-lg-6">
+<div class="card border-0 shadow-sm p-4 h-100">
+<h6 class="fw-bold mb-3">Monthly Expense Breakdown
+{% if view_account %}<small class="text-muted fw-normal">({{ view_account.name }})</small>{% endif %}
+</h6>
+{% if category_spending %}
+<canvas id="pieChart"></canvas>
+{% else %}
+<div class="text-center text-muted py-4">
+<i class="fas fa-chart-pie fa-2x mb-2"></i>
+<p class="small">No expense data yet.</p>
+</div>
+{% endif %}
+</div>
+</div>
+</div>
+
+<!-- Account Cards -->
+<h6 class="fw-bold mb-3">My Accounts</h6>
+<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
+<div class="col">
+<a href="/accounts/add" class="text-decoration-none">
+<div class="card border-0 shadow-sm p-4 d-flex align-items-center justify-content-center" style="min-height:170px;border:2px dashed #ced4da !important;background:#fff;cursor:pointer;" onmouseover="this.style.borderColor='#6c63ff'" onmouseout="this.style.borderColor='#ced4da'">
+<div class="text-center text-muted">
+<div class="rounded-circle d-flex align-items-center justify-content-center mx-auto mb-2" style="width:44px;height:44px;background:#f0eeff;">
+<i class="fas fa-plus" style="color:#6c63ff;"></i>
+</div>
+<div class="small fw-semibold">Add New Account</div>
+</div>
+</div>
+</a>
+</div>
+
+{% for item in account_data %}
+<div class="col">
+<div class="card border-0 shadow-sm p-4" style="min-height:170px;">
+<div class="d-flex justify-content-between align-items-center mb-3">
+<span class="fw-semibold small" style="color:#555;">{{ item.account.name }}</span>
+<form method="POST" action="/accounts/set-default/{{ item.account.id }}">
+<div class="form-check form-switch mb-0" title="Set as default account">
+<input class="form-check-input" type="checkbox" role="switch"
+onchange="this.form.submit()"
+{% if item.account.is_default %}checked{% endif %}
+style="cursor:pointer;width:2.5em;height:1.3em;">
+</div>
+</form>
+</div>
+<div class="fw-bold mb-1" style="font-size:1.6rem;color:{% if item.real_balance < 0 %}#e74c3c{% else %}#2d3748{% endif %};">
+₹{{ "%.2f"|format(item.real_balance) }}
+</div>
+<div class="text-muted small mb-3">{{ item.account.account_type }}</div>
+<div class="d-flex justify-content-between">
+<div>
+<div class="text-success fw-semibold small"><i class="fas fa-arrow-up me-1"></i>Income</div>
+<div class="fw-semibold small">₹{{ "%.2f"|format(item.income) }}</div>
+</div>
+<div class="text-end">
+<div class="text-danger fw-semibold small"><i class="fas fa-arrow-down me-1"></i>Expense</div>
+<div class="fw-semibold small">₹{{ "%.2f"|format(item.expense) }}</div>
+</div>
+</div>
+</div>
+</div>
+{% endfor %}
+
+</div>
+</div>
+</div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+{% if category_spending %}
+const ctx = document.getElementById('pieChart').getContext('2d');
+new Chart(ctx, {
+type: 'pie',
+data: {
+labels: [{% for c in category_spending %}'{{ c.name }}'{% if not loop.last %},{% endif %}{% endfor %}],
+datasets: [{
+data: [{% for c in category_spending %}{{ c.amount }}{% if not loop.last %},{% endif %}{% endfor %}],
+backgroundColor: ['#6c63ff','#ff6584','#43b89c','#f7931e','#2196f3','#e91e63','#00bcd4','#ff5722']
+}]
+},
+options: {
+responsive: true,
+plugins: {
+legend: { position: 'bottom' },
+tooltip: {
+callbacks: {
+label: ctx => ' ₹' + ctx.parsed.toFixed(2)
+}
+}
+}
+}
+});
+{% endif %}
+</script>
+{% endblock %}

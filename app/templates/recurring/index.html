@@ -1,0 +1,224 @@
+{% extends "base.html" %}
+{% block title %}Recurring Transactions - FinTrack{% endblock %}
+
+{% block content %}
+<div class="d-flex">
+    <div class="sidebar d-flex flex-column p-3" style="width:240px; min-height:100vh; background:#fff; border-right:1px solid #eee;">
+        <a class="navbar-brand fw-bold mb-4 ps-2" href="/"><span style="color:#6c63ff;">Fin</span>Track</a>
+        <nav class="nav flex-column gap-1">
+            <a href="/dashboard" class="nav-link sidebar-link"><i class="fas fa-home me-2"></i> Dashboard</a>
+            <a href="/transactions" class="nav-link sidebar-link"><i class="fas fa-exchange-alt me-2"></i> Transactions</a>
+            <a href="/budgets" class="nav-link sidebar-link"><i class="fas fa-wallet me-2"></i> Budgets</a>
+            <a href="/goals" class="nav-link sidebar-link"><i class="fas fa-bullseye me-2"></i> Savings Goals</a>
+            <a href="/analytics" class="nav-link sidebar-link"><i class="fas fa-chart-bar me-2"></i> Analytics</a>
+            <a href="/recurring" class="nav-link sidebar-link" style="background:#f3f2ff; color:#6c63ff;">
+                <i class="fas fa-redo me-2"></i> Recurring
+            </a>
+        </nav>
+        <div class="mt-auto">
+            <a href="/logout" class="nav-link sidebar-link text-danger"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
+        </div>
+    </div>
+
+    <div class="flex-grow-1 p-4" style="background:#f8f9fa; min-height:100vh;">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h4 class="fw-bold mb-1">Recurring Transactions</h4>
+                <p class="text-muted mb-0" style="font-size:0.9rem;">Automate your regular income and expenses</p>
+            </div>
+            <button class="btn btn-primary px-4" data-bs-toggle="modal" data-bs-target="#addRecurringModal">
+                <i class="fas fa-plus me-2"></i> Add Recurring
+            </button>
+        </div>
+
+        {% if recurring_list %}
+        <div class="card border-0 shadow-sm">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead style="background:#f8f9fa; font-size:0.82rem; text-transform:uppercase; color:#888;">
+                        <tr>
+                            <th class="px-4 py-3">Description</th>
+                            <th class="py-3">Type</th>
+                            <th class="py-3">Amount</th>
+                            <th class="py-3">Frequency</th>
+                            <th class="py-3">Next Date</th>
+                            <th class="py-3">End Date</th>
+                            <th class="py-3">Status</th>
+                            <th class="py-3">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody style="font-size:0.9rem;">
+                        {% for rec in recurring_list %}
+                        <tr>
+                            <td class="px-4 py-3">
+                                <div class="fw-semibold">{{ rec.description or '—' }}</div>
+                                <div class="text-muted" style="font-size:0.8rem;">
+                                    {% for acc in accounts %}
+                                        {% if acc.id == rec.account_id %}{{ acc.name }}{% endif %}
+                                    {% endfor %}
+                                </div>
+                            </td>
+                            <td>
+                                {% if rec.transaction_type == 'income' %}
+                                    <span class="badge rounded-pill" style="background:#d4edda; color:#155724;">Income</span>
+                                {% else %}
+                                    <span class="badge rounded-pill" style="background:#f8d7da; color:#721c24;">Expense</span>
+                                {% endif %}
+                            </td>
+                            <td class="fw-semibold {% if rec.transaction_type == 'income' %}text-success{% else %}text-danger{% endif %}">
+                                {% if rec.transaction_type == 'income' %}+{% else %}-{% endif %}₹{{ "%.2f"|format(rec.amount) }}
+                            </td>
+                            <td>
+                                <span class="badge rounded-pill" style="background:#e8e7ff; color:#6c63ff;">
+                                    {% if rec.frequency == 'daily' %}Daily
+                                    {% elif rec.frequency == 'weekly' %}Weekly
+                                    {% elif rec.frequency == 'monthly' %}Monthly
+                                    {% elif rec.frequency == 'every_3_months' %}Every 3 Months
+                                    {% elif rec.frequency == 'every_6_months' %}Every 6 Months
+                                    {% elif rec.frequency == 'yearly' %}Yearly
+                                    {% endif %}
+                                </span>
+                            </td>
+                            <td>{{ rec.next_occurrence_date.strftime('%d %b %Y') }}</td>
+                            <td>{{ rec.end_date.strftime('%d %b %Y') if rec.end_date else '—' }}</td>
+                            <td>
+                                {% if rec.is_active %}
+                                    <span class="badge rounded-pill" style="background:#d4edda; color:#155724;">Active</span>
+                                {% else %}
+                                    <span class="badge rounded-pill" style="background:#e2e3e5; color:#383d41;">Paused</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <form method="POST" action="/recurring/{{ rec.id }}/toggle">
+                                        <button type="submit" class="btn btn-sm btn-outline-secondary"
+                                                title="{{ 'Pause' if rec.is_active else 'Resume' }}">
+                                            <i class="fas fa-{{ 'pause' if rec.is_active else 'play' }}"></i>
+                                        </button>
+                                    </form>
+                                    <form method="POST" action="/recurring/{{ rec.id }}/delete"
+                                          onsubmit="return confirm('Delete this recurring transaction?')">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% else %}
+        <div class="card border-0 shadow-sm text-center py-5">
+            <div class="mb-3">
+                <i class="fas fa-redo" style="font-size:2.5rem; color:#ddd;"></i>
+            </div>
+            <h6 class="fw-semibold text-muted">No recurring transactions yet</h6>
+            <p class="text-muted small">Set up automatic income or expense entries that repeat on a schedule.</p>
+            <button class="btn btn-primary btn-sm px-4 mx-auto" style="width:fit-content;"
+                    data-bs-toggle="modal" data-bs-target="#addRecurringModal">
+                <i class="fas fa-plus me-2"></i> Add Recurring
+            </button>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+
+<!-- Add Recurring Modal -->
+<div class="modal fade" id="addRecurringModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold">Add Recurring Transaction</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="POST" action="/recurring">
+                <div class="modal-body px-4">
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small">Type</label>
+                        <div class="d-flex gap-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="transaction_type"
+                                       id="typeExpense" value="expense" checked>
+                                <label class="form-check-label text-danger" for="typeExpense">Expense</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="transaction_type"
+                                       id="typeIncome" value="income">
+                                <label class="form-check-label text-success" for="typeIncome">Income</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small">Description</label>
+                        <input type="text" name="description" class="form-control"
+                               placeholder="e.g. Netflix subscription, Salary" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small">Amount (₹)</label>
+                        <input type="number" name="amount" class="form-control"
+                               placeholder="0.00" step="0.01" min="0.01" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small">Account</label>
+                        <select name="account_id" class="form-select" required>
+                            <option value="">Select account</option>
+                            {% for account in accounts %}
+                            <option value="{{ account.id }}">{{ account.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small">Frequency</label>
+                        <select name="frequency" class="form-select" required>
+                            <option value="daily">Daily</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="monthly" selected>Monthly</option>
+                            <option value="every_3_months">Every 3 Months</option>
+                            <option value="every_6_months">Every 6 Months</option>
+                            <option value="yearly">Yearly</option>
+                        </select>
+                    </div>
+
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label class="form-label fw-semibold small">Start Date</label>
+                            <input type="date" name="start_date" class="form-control"
+                                   value="{{ now.strftime('%Y-%m-%d') }}" required>
+                        </div>
+                        <div class="col mb-3">
+                            <label class="form-label fw-semibold small">End Date <span class="text-muted fw-normal">(optional)</span></label>
+                            <input type="date" name="end_date" class="form-control">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary px-4">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

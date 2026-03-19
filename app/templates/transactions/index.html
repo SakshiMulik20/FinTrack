@@ -1,0 +1,80 @@
+
+
+{% extends "base.html" %}
+{% block title %}Transactions - FinTrack{% endblock %}
+
+{% block content %}
+<div class="d-flex">
+    <div class="sidebar d-flex flex-column p-3" style="width:240px; min-height:100vh; background:#fff; border-right:1px solid #eee;">
+        <a class="navbar-brand fw-bold mb-4 ps-2" href="/"><span style="color:#6c63ff;">Fin</span>Track</a>
+        <nav class="nav flex-column gap-1">
+            <a href="/dashboard" class="nav-link sidebar-link"><i class="fas fa-home me-2"></i> Dashboard</a>
+            <a href="/transactions" class="nav-link sidebar-link active"><i class="fas fa-exchange-alt me-2"></i> Transactions</a>
+            <a href="/budgets" class="nav-link sidebar-link"><i class="fas fa-wallet me-2"></i> Budgets</a>
+            <a href="/goals" class="nav-link sidebar-link"><i class="fas fa-bullseye me-2"></i> Savings Goals</a>
+            <a href="/analytics" class="nav-link sidebar-link"><i class="fas fa-chart-bar me-2"></i> Analytics</a>
+            <a href="/recurring" class="nav-link sidebar-link"><i class="fas fa-redo me-2"></i> Recurring</a>
+        </nav>
+        <div class="mt-auto">
+            <a href="/logout" class="nav-link sidebar-link text-danger"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
+        </div>
+    </div>
+
+    <div class="flex-grow-1 p-4" style="background:#f8f9fa;">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="fw-bold mb-0">Transactions</h1>
+            <a href="/transactions/add" class="btn btn-primary px-4">
+                <i class="fas fa-plus me-2"></i>Add Transaction
+            </a>
+        </div>
+
+        <div class="card border-0 shadow-sm p-3 mb-4">
+            <form method="GET" action="/transactions" class="d-flex gap-3">
+                <input type="text" name="search" value="{{ search }}"
+                       class="form-control" placeholder="Search transactions...">
+                <select name="account_id" class="form-select" style="max-width:200px;">
+                    <option value="">All Accounts</option>
+                    {% for account in accounts %}
+                    <option value="{{ account.id }}" {% if selected_account == account.id|string %}selected{% endif %}>
+                        {{ account.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn btn-primary px-4">Search</button>
+            </form>
+        </div>
+
+        <div class="card border-0 shadow-sm">
+            {% if transactions %}
+                {% for t in transactions %}
+                <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+                    <div>
+                        <div class="fw-semibold">{{ t.description or 'Transaction' }}</div>
+                        <div class="text-muted small">
+                            {{ t.transaction_date.strftime('%b %d, %Y') }}
+                            {% if t.category %} · {{ t.category.icon }} {{ t.category.name }}{% endif %}
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center gap-3">
+                        <span class="fw-bold {% if t.transaction_type == 'income' %}text-success{% else %}text-danger{% endif %}">
+                            {% if t.transaction_type == 'income' %}+{% else %}-{% endif %}₹{{ "%.2f"|format(t.amount) }}
+                        </span>
+                        <form method="POST" action="/transactions/delete/{{ t.id }}"
+                              onsubmit="return confirm('Delete this transaction?')">
+                            <button class="btn btn-sm btn-outline-danger">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="text-center text-muted py-5">
+                    <i class="fas fa-receipt fa-3x mb-3"></i>
+                    <p>No transactions found. <a href="/transactions/add">Add your first one!</a></p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

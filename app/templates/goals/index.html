@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block title %}Savings Goals - FinTrack{% endblock %}
+
+{% block content %}
+<div class="d-flex">
+    <div class="sidebar d-flex flex-column p-3" style="width:240px; min-height:100vh; background:#fff; border-right:1px solid #eee;">
+        <a class="navbar-brand fw-bold mb-4 ps-2" href="/"><span style="color:#6c63ff;">Fin</span>Track</a>
+        <nav class="nav flex-column gap-1">
+            <a href="/dashboard" class="nav-link sidebar-link"><i class="fas fa-home me-2"></i> Dashboard</a>
+            <a href="/transactions" class="nav-link sidebar-link"><i class="fas fa-exchange-alt me-2"></i> Transactions</a>
+            <a href="/budgets" class="nav-link sidebar-link"><i class="fas fa-wallet me-2"></i> Budgets</a>
+            <a href="/goals" class="nav-link sidebar-link active"><i class="fas fa-bullseye me-2"></i> Savings Goals</a>
+            <a href="/analytics" class="nav-link sidebar-link"><i class="fas fa-chart-bar me-2"></i> Analytics</a>
+            <a href="/recurring" class="nav-link sidebar-link"><i class="fas fa-redo me-2"></i> Recurring</a>
+        </nav>
+        <div class="mt-auto">
+            <a href="/logout" class="nav-link sidebar-link text-danger"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
+        </div>
+    </div>
+
+    <div class="flex-grow-1 p-4" style="background:#f8f9fa;">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="fw-bold mb-0">Savings Goals</h1>
+            <a href="/goals/add" class="btn btn-primary px-4">
+                <i class="fas fa-plus me-2"></i>New Goal
+            </a>
+        </div>
+
+        {% if goal_data %}
+        <div class="row g-4">
+            {% for item in goal_data %}
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <h5 class="fw-bold mb-1">
+                                {% if item.goal.is_completed %}
+                                    ✅ {{ item.goal.name }}
+                                {% else %}
+                                    🎯 {{ item.goal.name }}
+                                {% endif %}
+                            </h5>
+                            {% if item.goal.description %}
+                                <p class="text-muted small mb-1">{{ item.goal.description }}</p>
+                            {% endif %}
+                            {% if item.goal.target_date %}
+                                <small class="text-muted">
+                                    <i class="fas fa-calendar me-1"></i>
+                                    Target: {{ item.goal.target_date.strftime('%b %d, %Y') }}
+                                </small>
+                            {% endif %}
+                        </div>
+                        <form method="POST" action="/goals/delete/{{ item.goal.id }}"
+                              onsubmit="return confirm('Delete this goal?')">
+                            <button class="btn btn-sm btn-outline-danger">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="fw-bold" style="color:#6c63ff;">
+                            ₹{{ "%.2f"|format(item.goal.current_amount) }}
+                        </span>
+                        <span class="text-muted">
+                            of ₹{{ "%.2f"|format(item.goal.target_amount) }}
+                        </span>
+                    </div>
+
+                    <div class="progress mb-3" style="height:10px; border-radius:10px;">
+                        <div class="progress-bar {% if item.goal.is_completed %}bg-success{% else %}bg-primary{% endif %}"
+                             style="width:{{ item.percent }}%; border-radius:10px;"></div>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">{{ item.percent }}% saved</small>
+                        {% if not item.goal.is_completed %}
+                        <form method="POST" action="/goals/deposit/{{ item.goal.id }}" class="d-flex gap-2">
+                            <input type="number" name="amount" step="0.01" min="0.01"
+                                   class="form-control form-control-sm" placeholder="Amount" style="width:120px;" required>
+                            <button type="submit" class="btn btn-sm btn-primary">Add ₹</button>
+                        </form>
+                        {% else %}
+                        <span class="badge bg-success">Goal Reached!</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="card border-0 shadow-sm p-5 text-center text-muted">
+            <i class="fas fa-bullseye fa-3x mb-3"></i>
+            <h5>No savings goals yet</h5>
+            <p class="small">Create a goal — like saving for a trip, laptop, or emergency fund.</p>
+            <a href="/goals/add" class="btn btn-primary px-4">Create First Goal</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

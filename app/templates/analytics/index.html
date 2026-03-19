@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block title %}Analytics - FinTrack{% endblock %}
+
+{% block content %}
+<div class="d-flex">
+    <div class="sidebar d-flex flex-column p-3" style="width:240px; min-height:100vh; background:#fff; border-right:1px solid #eee;">
+        <a class="navbar-brand fw-bold mb-4 ps-2" href="/"><span style="color:#6c63ff;">Fin</span>Track</a>
+        <nav class="nav flex-column gap-1">
+            <a href="/dashboard" class="nav-link sidebar-link"><i class="fas fa-home me-2"></i> Dashboard</a>
+            <a href="/transactions" class="nav-link sidebar-link"><i class="fas fa-exchange-alt me-2"></i> Transactions</a>
+            <a href="/budgets" class="nav-link sidebar-link"><i class="fas fa-wallet me-2"></i> Budgets</a>
+            <a href="/goals" class="nav-link sidebar-link"><i class="fas fa-bullseye me-2"></i> Savings Goals</a>
+            <a href="/analytics" class="nav-link sidebar-link active"><i class="fas fa-chart-bar me-2"></i> Analytics</a>
+            <a href="/recurring" class="nav-link sidebar-link"><i class="fas fa-redo me-2"></i> Recurring</a>
+        </nav>
+        <div class="mt-auto">
+            <a href="/logout" class="nav-link sidebar-link text-danger"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
+        </div>
+    </div>
+
+    <div class="flex-grow-1 p-4" style="background:#f8f9fa;">
+        <h1 class="fw-bold mb-4">Analytics</h1>
+
+        <div class="card border-0 shadow-sm p-4 mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h6 class="fw-bold mb-0">Income vs Expenses</h6>
+                <select id="viewSelect" class="form-select w-auto" onchange="loadChart(this.value)">
+                    <option value="daily">Daily</option>
+                    <option value="weekly">Weekly</option>
+                    <option value="monthly" selected>Monthly</option>
+                    <option value="6month">6 Months</option>
+                    <option value="yearly">Yearly</option>
+                </select>
+            </div>
+            <canvas id="barChart" height="100"></canvas>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm p-4">
+                    <h6 class="fw-bold mb-3">This Month's Spending by Category</h6>
+                    <canvas id="doughnutChart"></canvas>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm p-4">
+                    <h6 class="fw-bold mb-3">Category Breakdown</h6>
+                    <div id="categoryList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+let barChart, doughnutChart;
+
+async function loadChart(view) {
+    const res = await fetch(`/analytics/data?view=${view}`);
+    const data = await res.json();
+
+    if (barChart) barChart.destroy();
+    const barCtx = document.getElementById('barChart').getContext('2d');
+    barChart = new Chart(barCtx, {
+        type: 'bar',
+        data: {
+            labels: data.labels,
+            datasets: [
+                {
+                    label: 'Income (₹)',
+                    data: data.income,
+                    backgroundColor: 'rgba(46, 204, 113, 0.7)',
+                    borderRadius: 6
+                },
+                {
+                    label: 'Expenses (₹)',
+                    data: data.expenses,
+                    backgroundColor: 'rgba(231, 76, 60, 0.7)',
+                    borderRadius: 6
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { position: 'top' } },
+            scales: { y: { beginAtZero: true } }
+        }
+    });
+
+    if (doughnutChart) doughnutChart.destroy();
+    if (data.categories.length > 0) {
+        const dCtx = document.getElementById('doughnutChart').getContext('2d');
+        doughnutChart = new Chart(dCtx, {
+            type: 'doughnut',
+            data: {
+                labels: data.categories.map(c => c.name),
+                datasets: [{
+                    data: data.categories.map(c => c.amount),
+                    backgroundColor: ['#6c63ff','#ff6584','#43b89c','#f7931e','#2196f3','#e91e63','#00bcd4','#ff5722'],
+                }]
+            },
+            options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+        });
+
+        const total = data.categories.reduce((s, c) => s + c.amount, 0);
+        document.getElementById('categoryList').innerHTML = data.categories.map(c => `
+            <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                <span class="fw-semibold">${c.name}</span>
+                <div class="text-end">
+                    <div class="fw-bold">₹${c.amount.toFixed(2)}</div>
+                    <small class="text-muted">${((c.amount/total)*100).toFixed(1)}%</small>
+                </div>
+            </div>
+        `).join('');
+    } else {
+        document.getElementById('categoryList').innerHTML = '<p class="text-muted text-center py-4">No category data yet.</p>';
+    }
+}
+
+loadChart('monthly');
+</script>
+{% endblock %}
