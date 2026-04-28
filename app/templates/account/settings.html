@@ -2,10 +2,24 @@
 {% block title %}Account Settings - FinTrack{% endblock %}
 
 {% block content %}
+
+<style>
+.sidebar-link { color:#475569 !important; border-radius:8px; padding:10px 14px !important; transition:.2s; text-decoration:none; }
+.sidebar-link:hover { background:#f0fafd; color:#0f2942 !important; }
+.sidebar-link.active { background:linear-gradient(135deg,#d4e8f0,#b8d8e6); color:#0f2942 !important; font-weight:600; border-left:3px solid #0891b2; }
+.sidebar-link i { color:#0891b2; }
+.sidebar-link.text-danger i { color:#dc2626; }
+.btn-primary { background:linear-gradient(135deg,#15304f 0%,#1f4a64 100%) !important; border:none !important; color:#fff !important; border-radius:10px !important; font-weight:600; }
+.btn-primary:hover { background:linear-gradient(135deg,#0891b2 0%,#0e7490 100%) !important; transform:translateY(-2px); box-shadow:0 6px 16px rgba(8,145,178,.3); }
+.form-control:focus { border-color:#0891b2 !important; box-shadow:0 0 0 3px rgba(8,145,178,.15) !important; background:#fff !important; }
+</style>
+
 <div class="d-flex">
     <!-- Sidebar -->
-    <div class="sidebar d-flex flex-column p-3" style="width:240px; min-height:100vh; background:#fff; border-right:1px solid #eee;">
-        <a class="navbar-brand fw-bold mb-4 ps-2" href="/"><span style="color:#6c63ff;">Fin</span>Track</a>
+    <div class="sidebar d-flex flex-column p-3" style="width:240px; min-height:100vh; background:#fff; border-right:1px solid #d4e2ec;">
+        <a class="navbar-brand fw-bold mb-4 ps-2" href="/" style="color:#0f2942;">
+            <i class="fas fa-chart-line me-2" style="color:#0891b2;"></i>FinTrack
+        </a>
         <nav class="nav flex-column gap-1">
             <a href="/dashboard" class="nav-link sidebar-link"><i class="fas fa-home me-2"></i> Dashboard</a>
             <a href="/transactions" class="nav-link sidebar-link"><i class="fas fa-exchange-alt me-2"></i> Transactions</a>
@@ -20,23 +34,23 @@
     </div>
 
     <!-- Main -->
-    <div class="flex-grow-1 d-flex align-items-center justify-content-center" style="background:#f8f9fa; min-height:100vh;">
+    <div class="flex-grow-1 d-flex align-items-center justify-content-center" style="background:#f8fafc; min-height:100vh;">
         <div class="card border-0 shadow" style="width:100%; max-width:780px; border-radius:16px;">
             <div class="d-flex" style="min-height:460px;">
 
                 <!-- Left Panel -->
-                <div class="p-4 border-end" style="width:220px; background:#fff; border-radius:16px 0 0 16px;">
-                    <div class="mb-1 fw-bold fs-5">Account</div>
+                <div class="p-4 border-end" style="width:220px; background:#fff; border-radius:16px 0 0 16px; border-color:#d4e2ec !important;">
+                    <div class="mb-1 fw-bold fs-5" style="color:#0f2942;">Account</div>
                     <div class="text-muted mb-4" style="font-size:0.82rem;">Manage your account info.</div>
                     <nav class="nav flex-column gap-1">
                         <a href="/account/settings"
                            class="nav-link rounded px-3 py-2 fw-semibold d-flex align-items-center gap-2"
-                           style="background:#f3f2ff; color:#6c63ff; font-size:0.9rem;">
-                            <i class="fas fa-user" style="font-size:0.85rem;"></i> Profile
+                           style="background:linear-gradient(135deg,#d4e8f0,#b8d8e6); color:#0f2942; font-size:0.9rem;">
+                            <i class="fas fa-user" style="font-size:0.85rem; color:#0891b2;"></i> Profile
                         </a>
                         <a href="#" class="nav-link rounded px-3 py-2 text-muted d-flex align-items-center gap-2"
                            style="font-size:0.9rem;">
-                            <i class="fas fa-shield-alt" style="font-size:0.85rem;"></i> Security
+                            <i class="fas fa-shield-alt" style="font-size:0.85rem; color:#0891b2;"></i> Security
                         </a>
                     </nav>
                 </div>
@@ -44,7 +58,7 @@
                 <!-- Right Panel -->
                 <div class="flex-grow-1 p-4" style="background:#fff; border-radius:0 16px 16px 0;">
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h6 class="fw-bold mb-0 fs-5">Profile details</h6>
+                        <h6 class="fw-bold mb-0 fs-5" style="color:#0f2942;">Profile details</h6>
                         <a href="/dashboard" class="text-muted text-decoration-none fs-5">&times;</a>
                     </div>
 
@@ -66,12 +80,12 @@
                                                  style="width:48px; height:48px;" alt="Profile">
                                         {% else %}
                                             <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold text-white"
-                                                 style="width:48px; height:48px; background:#6c63ff; font-size:1.1rem;">
+                                                 style="width:48px; height:48px; background:linear-gradient(135deg,#0f2942,#0891b2); font-size:1.1rem;">
                                                 {{ current_user.full_name[0].upper() }}
                                             </div>
                                         {% endif %}
                                         <div class="position-absolute bottom-0 end-0 rounded-circle d-flex align-items-center justify-content-center"
-                                             style="width:18px; height:18px; background:#6c63ff; border:2px solid #fff;">
+                                             style="width:18px; height:18px; background:#0891b2; border:2px solid #fff;">
                                             <i class="fas fa-camera text-white" style="font-size:0.45rem;"></i>
                                         </div>
                                     </div>
@@ -81,7 +95,7 @@
                                 </form>
 
                                 <div>
-                                    <div class="fw-semibold" style="font-size:0.9rem;">{{ current_user.full_name }}</div>
+                                    <div class="fw-semibold" style="font-size:0.9rem; color:#0f2942;">{{ current_user.full_name }}</div>
                                     {% if current_user.profile_photo %}
                                     <form method="POST" action="/account/settings" class="d-inline">
                                         <input type="hidden" name="remove_photo" value="1">
@@ -93,20 +107,20 @@
                                     {% endif %}
                                 </div>
                             </div>
-                            <button class="btn btn-link text-decoration-none p-0 text-muted"
+                            <button class="btn btn-link text-decoration-none p-0"
                                     type="button"
                                     data-bs-toggle="collapse"
                                     data-bs-target="#editNameForm"
-                                    style="font-size:0.85rem; white-space:nowrap;">
+                                    style="font-size:0.85rem; white-space:nowrap; color:#0891b2; font-weight:500;">
                                 Update profile
                             </button>
                         </div>
 
                         <!-- Edit Name Form -->
                         <div class="collapse mt-3" id="editNameForm">
-                            <form method="POST" action="/account/settings" class="p-3 rounded" style="background:#f8f9fa;">
+                            <form method="POST" action="/account/settings" class="p-3 rounded" style="background:#f0fafd;">
                                 <div class="mb-3">
-                                    <label class="form-label fw-semibold small">Full Name</label>
+                                    <label class="form-label fw-semibold small" style="color:#0f2942;">Full Name</label>
                                     <input type="text" name="full_name"
                                            value="{{ current_user.full_name }}"
                                            class="form-control" required>
@@ -120,100 +134,82 @@
                     </div>
 
                     <!-- Email Row -->
-<div class="py-3 border-bottom">
-    <div class="d-flex align-items-start">
-        <span class="text-muted" style="font-size:0.9rem; min-width:140px; padding-top:2px;">Email addresses</span>
-        <div class="flex-grow-1">
-            <div class="d-flex align-items-center gap-2 mb-2">
-                <span style="font-size:0.9rem;">{{ current_user.email }}</span>
-                <span class="badge rounded-pill"
-                      style="background:#eee; color:#555; font-size:0.72rem; font-weight:500;">Primary</span>
-            </div>
+                    <div class="py-3 border-bottom">
+                        <div class="d-flex align-items-start">
+                            <span class="text-muted" style="font-size:0.9rem; min-width:140px; padding-top:2px;">Email addresses</span>
+                            <div class="flex-grow-1">
+                                <div class="d-flex align-items-center gap-2 mb-2">
+                                    <span style="font-size:0.9rem; color:#0f2942;">{{ current_user.email }}</span>
+                                    <span class="badge rounded-pill"
+                                          style="background:#d4e8f0; color:#0f2942; font-size:0.72rem; font-weight:600;">Primary</span>
+                                </div>
 
-            {% for email in secondary_emails %}
-            <div class="d-flex align-items-center gap-2 mb-1">
-                <span style="font-size:0.9rem;">{{ email.email }}</span>
-                {% if email.is_verified %}
-                    <span class="badge rounded-pill" style="background:#d4edda; color:#155724; font-size:0.72rem;">Verified</span>
-                {% else %}
-                    <span class="badge rounded-pill" style="background:#fff3cd; color:#856404; font-size:0.72rem;">Pending Verification</span>
-                {% endif %}
-                <form method="POST" action="/account/settings" class="d-inline">
-                    <input type="hidden" name="action" value="remove_email">
-                    <input type="hidden" name="email_id" value="{{ email.id }}">
-                    <button type="submit" class="btn btn-link p-0 text-danger" style="font-size:0.78rem;">Remove</button>
-                </form>
-            </div>
-            {% endfor %}
+                                {% for email in secondary_emails %}
+                                <div class="d-flex align-items-center gap-2 mb-1">
+                                    <span style="font-size:0.9rem; color:#0f2942;">{{ email.email }}</span>
+                                    {% if email.is_verified %}
+                                        <span class="badge rounded-pill" style="background:#d1fae5; color:#047857; font-size:0.72rem;">Verified</span>
+                                    {% else %}
+                                        <span class="badge rounded-pill" style="background:#fef3c7; color:#92400e; font-size:0.72rem;">Pending Verification</span>
+                                    {% endif %}
+                                    <form method="POST" action="/account/settings" class="d-inline">
+                                        <input type="hidden" name="action" value="remove_email">
+                                        <input type="hidden" name="email_id" value="{{ email.id }}">
+                                        <button type="submit" class="btn btn-link p-0 text-danger" style="font-size:0.78rem;">Remove</button>
+                                    </form>
+                                </div>
+                                {% endfor %}
 
-            <button class="btn btn-link text-decoration-none p-0 d-flex align-items-center gap-1"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#addEmailForm"
-                    style="font-size:0.85rem; color:#6c63ff;">
-                <i class="fas fa-plus" style="font-size:0.75rem;"></i> Add email address
-            </button>
+                                <button class="btn btn-link p-0 mt-1"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#addEmailForm"
+                                        style="font-size:0.82rem; color:#0891b2; font-weight:500; text-decoration:none;">
+                                    + Add email address
+                                </button>
 
-            <div class="collapse mt-2" id="addEmailForm">
-                <form method="POST" action="/account/settings" class="p-3 rounded" style="background:#f8f9fa;">
-                    <input type="hidden" name="action" value="add_email">
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold small">New Email Address</label>
-                        <input type="email" name="new_email" class="form-control" placeholder="Enter new email" required>
+                                <div class="collapse mt-2" id="addEmailForm">
+                                    <form method="POST" action="/account/settings" class="p-3 rounded" style="background:#f0fafd;">
+                                        <input type="hidden" name="action" value="add_email">
+                                        <div class="mb-2">
+                                            <input type="email" name="new_email"
+                                                   placeholder="you@example.com"
+                                                   class="form-control form-control-sm" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary btn-sm px-3">Add</button>
+                                        <button type="button" class="btn btn-light btn-sm px-3 ms-2"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#addEmailForm">Cancel</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-sm px-4">Add</button>
-                    <button type="button" class="btn btn-light btn-sm px-3 ms-2"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#addEmailForm">Cancel</button>
-                </form>
-            </div>
-
-        </div>
-    </div>
-</div>
 
                     <!-- Connected Accounts Row -->
                     <div class="py-3">
                         <div class="d-flex align-items-start">
                             <span class="text-muted" style="font-size:0.9rem; min-width:140px; padding-top:2px;">Connected accounts</span>
                             <div class="flex-grow-1">
+                                {% if current_user.google_id %}
                                 <div class="d-flex align-items-center gap-2 mb-2">
-                                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" width="18" height="18" alt="Google">
-                                    <span style="font-size:0.88rem;">Google &bull; {{ current_user.email }}</span>
+                                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="16">
+                                    <span style="font-size:0.9rem; color:#0f2942;">Google • {{ current_user.email }}</span>
                                 </div>
-                                <button class="btn btn-link text-decoration-none p-0 d-flex align-items-center gap-1"
-                                        type="button"
-                                        data-bs-toggle="collapse"
-                                        data-bs-target="#addAccountForm"
-                                        style="font-size:0.85rem; color:#6c63ff;">
-                                    <i class="fas fa-plus" style="font-size:0.75rem;"></i> Connect another account
-                                </button>
-                                <div class="collapse mt-2" id="addAccountForm">
-                                    <div class="p-3 rounded" style="background:#f8f9fa;">
-                                        <p class="small text-muted mb-3">Choose how to connect:</p>
-                                        <div class="d-flex flex-column gap-2">
-                                            <a href="{{ url_for('google.login') }}"
-                                               class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-2 justify-content-center">
-                                                <img src="https://www.svgrepo.com/show/475656/google-color.svg" width="16" height="16" alt="Google">
-                                                Continue with Google
-                                            </a>
-                                            <button type="button"
-                                                    class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-2 justify-content-center">
-                                                <i class="fas fa-envelope text-muted"></i>
-                                                Connect with Email & Password
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
+                                {% else %}
+                                <a href="{{ url_for('google.login') }}" class="btn btn-link p-0"
+                                   style="font-size:0.82rem; color:#0891b2; font-weight:500; text-decoration:none;">
+                                    + Connect another account
+                                </a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
 
                 </div>
-                <!-- End Right Panel -->
-
             </div>
         </div>
     </div>
 </div>
+
 {% endblock %}

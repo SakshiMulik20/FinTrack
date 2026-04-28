@@ -70,10 +70,9 @@ def add():
 
         db.session.commit()
                 # Trigger budget alert check if it's an expense
-        if transaction_type == 'expense' and category_id:
-            category = Category.query.get(category_id)
-            if category:
-                check_budget_for_user(current_user.id, category.name)
+                # Trigger budget alert check if it's an expense
+        if transaction_type == 'expense':
+            check_budget_for_user(current_user.id)
         flash('Transaction added successfully!', 'success')
         return redirect(url_for('transactions.index', account_id=account_id))
 

@@ -2,9 +2,87 @@
 {% block title %}Budgets - FinTrack{% endblock %}
 
 {% block content %}
+<style>
+.sidebar-link { color:#475569 !important; border-radius:8px; padding:10px 14px !important; transition:.2s; text-decoration:none; }
+.sidebar-link:hover { background:#f0fafd; color:#0f2942 !important; }
+.sidebar-link.active { background:linear-gradient(135deg,#d4e8f0,#b8d8e6); color:#0f2942 !important; font-weight:600; border-left:3px solid #0891b2; }
+.sidebar-link i { color:#0891b2; }
+.sidebar-link.text-danger i { color:#dc2626; }
+
+.form-label { color:#0f2942; }
+.form-control, .form-select {
+  border:1.5px solid #d4e2ec !important;
+  border-radius:10px !important;
+  background:#f8fafc !important;
+  transition:.2s;
+}
+.form-control:focus, .form-select:focus {
+  border-color:#0891b2 !important;
+  box-shadow:0 0 0 3px rgba(8,145,178,.15) !important;
+  background:#fff !important;
+}
+
+.btn-primary-custom {
+  background:linear-gradient(135deg,#15304f 0%,#1f4a64 100%) !important;
+  border:none !important;
+  color:#fff !important;
+  border-radius:10px !important;
+  font-weight:600;
+  transition:.2s;
+}
+.btn-primary-custom:hover {
+  background:linear-gradient(135deg,#0891b2 0%,#0e7490 100%) !important;
+  transform:translateY(-2px);
+  box-shadow:0 8px 20px rgba(8,145,178,.3);
+  color:#fff !important;
+}
+
+.btn-delete {
+  background:#fff;
+  border:1.5px solid #fecaca !important;
+  color:#dc2626 !important;
+  border-radius:8px !important;
+  transition:.2s;
+}
+.btn-delete:hover { background:#fee2e2; border-color:#dc2626 !important; color:#b91c1c !important; }
+
+.budget-card {
+  border-radius:16px;
+  border:none;
+  background:#fff;
+  transition:.2s;
+}
+.budget-card:hover { box-shadow:0 12px 30px rgba(15,41,66,.08); transform:translateY(-2px); }
+
+.section-title { color:#0f2942; font-weight:700; }
+
+.badge-safe   { background:#d1fae5 !important; color:#047857 !important; }
+.badge-warn   { background:#fef3c7 !important; color:#92400e !important; }
+.badge-danger { background:#fee2e2 !important; color:#b91c1c !important; }
+
+.progress-themed { background:#e2eaf2; border-radius:10px; height:10px; }
+.bar-safe   { background:linear-gradient(90deg,#0891b2,#22d3ee) !important; }
+.bar-warn   { background:linear-gradient(90deg,#f59e0b,#fbbf24) !important; }
+.bar-danger { background:linear-gradient(90deg,#dc2626,#ef4444) !important; }
+
+.alert-themed {
+  background:#fee2e2;
+  border:none;
+  border-left:3px solid #dc2626;
+  color:#991b1b;
+  border-radius:8px;
+}
+
+.empty-state { color:#64748b; }
+.empty-state i { color:#0891b2; }
+</style>
+
 <div class="d-flex">
-    <div class="sidebar d-flex flex-column p-3" style="width:240px; min-height:100vh; background:#fff; border-right:1px solid #eee;">
-        <a class="navbar-brand fw-bold mb-4 ps-2" href="/"><span style="color:#6c63ff;">Fin</span>Track</a>
+    <!-- Sidebar -->
+    <div class="sidebar d-flex flex-column p-3" style="width:240px; min-height:100vh; background:#fff; border-right:1px solid #d4e2ec;">
+        <a class="navbar-brand fw-bold mb-4 ps-2" href="/" style="color:#0f2942;">
+            <i class="fas fa-chart-line me-2" style="color:#0891b2;"></i>FinTrack
+        </a>
         <nav class="nav flex-column gap-1">
             <a href="/dashboard" class="nav-link sidebar-link"><i class="fas fa-home me-2"></i> Dashboard</a>
             <a href="/transactions" class="nav-link sidebar-link"><i class="fas fa-exchange-alt me-2"></i> Transactions</a>
@@ -18,12 +96,15 @@
         </div>
     </div>
 
-    <div class="flex-grow-1 p-4" style="background:#f8f9fa;">
-        <h1 class="fw-bold mb-4">Budgets — {{ now.strftime('%B %Y') }}</h1>
+    <!-- Main -->
+    <div class="flex-grow-1 p-4" style="background:#f8fafc; min-height:100vh;">
+        <h1 class="fw-bold mb-4" style="color:#0f2942;">
+            <i class="fas fa-wallet me-2" style="color:#0891b2;"></i>Budgets — {{ now.strftime('%B %Y') }}
+        </h1>
 
         <!-- Set Budget Form -->
-        <div class="card border-0 shadow-sm p-4 mb-4">
-            <h6 class="fw-bold mb-3">Set a Budget</h6>
+        <div class="card budget-card shadow-sm p-4 mb-4">
+            <h6 class="section-title mb-3">Set a Budget</h6>
             <form method="POST" action="/budgets" class="row g-3 align-items-end">
                 <div class="col-md-4">
                     <label class="form-label fw-semibold">Category (leave blank for overall)</label>
@@ -40,7 +121,7 @@
                            class="form-control" placeholder="e.g. 50000" required>
                 </div>
                 <div class="col-md-4">
-                    <button type="submit" class="btn btn-primary w-100">
+                    <button type="submit" class="btn btn-primary-custom w-100 py-2">
                         <i class="fas fa-save me-2"></i>Save Budget
                     </button>
                 </div>
@@ -50,39 +131,39 @@
         <!-- Budget List -->
         {% if budget_data %}
             {% for item in budget_data %}
-            <div class="card border-0 shadow-sm p-4 mb-3">
+            <div class="card budget-card shadow-sm p-4 mb-3">
                 <div class="d-flex justify-content-between align-items-start mb-3">
                     <div>
-                        <h6 class="fw-bold mb-0">
+                        <h6 class="fw-bold mb-1" style="color:#0f2942;">
                             {% if item.budget.category %}
                                 {{ item.budget.category.icon }} {{ item.budget.category.name }}
                             {% else %}
                                 🏦 Overall Monthly Budget
                             {% endif %}
                         </h6>
-                        <small class="text-muted">
+                        <small style="color:#64748b;">
                             ₹{{ "%.2f"|format(item.spent) }} spent of ₹{{ "%.2f"|format(item.budget.amount_limit) }}
                             · ₹{{ "%.2f"|format(item.remaining) }} remaining
                         </small>
                     </div>
                     <div class="d-flex align-items-center gap-2">
-                        <span class="badge {% if item.percent >= 90 %}bg-danger{% elif item.percent >= 70 %}bg-warning text-dark{% else %}bg-success{% endif %}">
+                        <span class="badge {% if item.percent >= 90 %}badge-danger{% elif item.percent >= 70 %}badge-warn{% else %}badge-safe{% endif %} px-3 py-2">
                             {{ item.percent }}%
                         </span>
                         <form method="POST" action="/budgets/delete/{{ item.budget.id }}"
                               onsubmit="return confirm('Remove this budget?')">
-                            <button class="btn btn-sm btn-outline-danger">
+                            <button class="btn btn-sm btn-delete">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </form>
                     </div>
                 </div>
-                <div class="progress" style="height:10px; border-radius:10px;">
-                    <div class="progress-bar {% if item.percent >= 90 %}bg-danger{% elif item.percent >= 70 %}bg-warning{% else %}bg-primary{% endif %}"
+                <div class="progress progress-themed">
+                    <div class="progress-bar {% if item.percent >= 90 %}bar-danger{% elif item.percent >= 70 %}bar-warn{% else %}bar-safe{% endif %}"
                          style="width:{{ item.percent }}%; border-radius:10px;"></div>
                 </div>
                 {% if item.percent >= 90 %}
-                <div class="alert alert-danger mt-3 mb-0 py-2 small">
+                <div class="alert alert-themed mt-3 mb-0 py-2 small">
                     <i class="fas fa-exclamation-triangle me-1"></i>
                     You've used {{ item.percent }}% of this budget!
                 </div>
@@ -90,9 +171,9 @@
             </div>
             {% endfor %}
         {% else %}
-            <div class="card border-0 shadow-sm p-5 text-center text-muted">
+            <div class="card budget-card shadow-sm p-5 text-center empty-state">
                 <i class="fas fa-wallet fa-3x mb-3"></i>
-                <p>No budgets set for {{ now.strftime('%B %Y') }}. Set one above!</p>
+                <p class="mb-0">No budgets set for {{ now.strftime('%B %Y') }}. Set one above!</p>
             </div>
         {% endif %}
     </div>

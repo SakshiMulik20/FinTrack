@@ -2,9 +2,90 @@
 {% block title %}Scan Receipt - FinTrack{% endblock %}
 
 {% block content %}
+<style>
+.sidebar-link { color:#475569 !important; border-radius:8px; padding:10px 14px !important; transition:.2s; text-decoration:none; }
+.sidebar-link:hover { background:#f0fafd; color:#0f2942 !important; }
+.sidebar-link.active { background:linear-gradient(135deg,#d4e8f0,#b8d8e6); color:#0f2942 !important; font-weight:600; border-left:3px solid #0891b2; }
+.sidebar-link i { color:#0891b2; }
+.sidebar-link.text-danger i { color:#dc2626; }
+
+.form-label { color:#0f2942; }
+.form-control, .form-select {
+  border:1.5px solid #d4e2ec !important;
+  border-radius:10px !important;
+  background:#f8fafc !important;
+  transition:.2s;
+}
+.form-control:focus, .form-select:focus {
+  border-color:#0891b2 !important;
+  box-shadow:0 0 0 3px rgba(8,145,178,.15) !important;
+  background:#fff !important;
+}
+
+.btn-primary-custom {
+  background:linear-gradient(135deg,#15304f 0%,#1f4a64 100%) !important;
+  border:none !important;
+  color:#fff !important;
+  border-radius:10px !important;
+  font-weight:600;
+  transition:.2s;
+}
+.btn-primary-custom:hover {
+  background:linear-gradient(135deg,#0891b2 0%,#0e7490 100%) !important;
+  transform:translateY(-2px);
+  box-shadow:0 8px 20px rgba(8,145,178,.3);
+  color:#fff !important;
+}
+
+.btn-cancel {
+  background:#fff;
+  border:1.5px solid #d4e2ec !important;
+  color:#475569 !important;
+  border-radius:10px !important;
+  font-weight:600;
+  transition:.2s;
+}
+.btn-cancel:hover {
+  background:#f0fafd;
+  color:#0f2942 !important;
+  border-color:#0891b2 !important;
+}
+
+.upload-card {
+  border-radius:16px;
+  border:none;
+  background:#fff;
+}
+
+#dropZone {
+  border:2px dashed #b8d8e6 !important;
+  background:#f0fafd !important;
+  border-radius:12px !important;
+  cursor:pointer;
+  transition:.2s;
+}
+#dropZone:hover {
+  border-color:#0891b2 !important;
+  background:#e0f2fe !important;
+}
+#dropZone i { color:#0891b2 !important; }
+#dropZone p.fw-semibold { color:#0f2942; }
+
+.detected-alert {
+  background:linear-gradient(135deg,#d4e8f0,#e0f2fe);
+  border:1px solid #0891b2;
+  border-radius:10px;
+  color:#0f2942;
+}
+.detected-alert i { color:#0891b2; }
+</style>
+
 <div class="d-flex">
-    <div class="sidebar d-flex flex-column p-3" style="width:240px; min-height:100vh; background:#fff; border-right:1px solid #eee;">
-        <a class="navbar-brand fw-bold mb-4 ps-2" href="/"><span style="color:#6c63ff;">Fin</span>Track</a>
+    <!-- Sidebar -->
+    <div class="sidebar d-flex flex-column p-3" style="width:240px; min-height:100vh; background:#fff; border-right:1px solid #d4e2ec;">
+        <a class="navbar-brand fw-bold mb-4 ps-2" href="/" style="color:#0f2942;">
+            <i class="fas fa-chart-line me-2" style="color:#0891b2;"></i>FinTrack
+        </a>
         <nav class="nav flex-column gap-1">
             <a href="/dashboard" class="nav-link sidebar-link"><i class="fas fa-home me-2"></i> Dashboard</a>
             <a href="/transactions" class="nav-link sidebar-link active"><i class="fas fa-exchange-alt me-2"></i> Transactions</a>
@@ -18,9 +99,12 @@
         </div>
     </div>
 
-    <div class="flex-grow-1 p-4" style="background:#f8f9fa;">
-        <h1 class="fw-bold mb-1">Scan Receipt</h1>
-        <p class="text-muted mb-4">Upload a photo of your receipt and we'll extract the amount automatically.</p>
+    <!-- Main -->
+    <div class="flex-grow-1 p-4" style="background:#f8fafc; min-height:100vh;">
+        <h1 class="fw-bold mb-1" style="color:#0f2942;">
+            <i class="fas fa-camera me-2" style="color:#0891b2;"></i>Scan Receipt
+        </h1>
+        <p class="mb-4" style="color:#64748b;">Upload a photo of your receipt and we'll extract the amount automatically.</p>
 
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
@@ -33,23 +117,22 @@
         {% endwith %}
 
         <!-- Upload Form -->
-        <div class="card border-0 shadow-sm p-4 mb-4" style="max-width:600px;">
+        <div class="card upload-card shadow-sm p-4 mb-4" style="max-width:600px;">
             <form method="POST" enctype="multipart/form-data" id="uploadForm">
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Upload Receipt Image</label>
-                    <div id="dropZone" class="border rounded-3 p-5 text-center"
-                         style="border-style:dashed !important; cursor:pointer; background:#fafafa;"
+                    <div id="dropZone" class="p-5 text-center"
                          onclick="document.getElementById('receiptFile').click()">
-                        <i class="fas fa-camera fa-2x mb-2" style="color:#f5576c;"></i>
+                        <i class="fas fa-camera fa-2x mb-2"></i>
                         <p class="mb-0 fw-semibold">Click to upload or drag & drop</p>
-                        <p class="text-muted small mb-0">JPG, PNG, HEIC supported</p>
-                        <p id="fileName" class="text-success small mt-2 mb-0"></p>
+                        <p class="small mb-0" style="color:#64748b;">JPG, PNG, HEIC supported</p>
+                        <p id="fileName" class="small mt-2 mb-0" style="color:#0891b2; font-weight:600;"></p>
                     </div>
                     <input type="file" id="receiptFile" name="receipt"
                            accept="image/*" class="d-none"
                            onchange="document.getElementById('fileName').textContent = this.files[0]?.name || ''">
                 </div>
-                <button type="submit" class="btn btn-dark w-100 py-3 fw-bold">
+                <button type="submit" class="btn btn-primary-custom w-100 py-3">
                     <i class="fas fa-magic me-2"></i> Extract Amount
                 </button>
             </form>
@@ -57,13 +140,12 @@
 
         <!-- Result + Transaction Form -->
         {% if extracted_amount is not none %}
-        <div class="card border-0 shadow-sm p-4" style="max-width:600px;">
-            <div class="alert mb-4 d-flex align-items-center gap-3"
-                 style="background:#f0fdf4; border:1px solid #86efac; border-radius:10px;">
-                <i class="fas fa-check-circle fa-lg" style="color:#22c55e;"></i>
+        <div class="card upload-card shadow-sm p-4" style="max-width:600px;">
+            <div class="alert detected-alert mb-4 d-flex align-items-center gap-3">
+                <i class="fas fa-check-circle fa-lg"></i>
                 <div>
                     <div class="fw-bold">Amount Detected!</div>
-                    <div class="text-muted small">Extracted from your receipt — edit if needed.</div>
+                    <div class="small" style="color:#475569;">Extracted from your receipt — edit if needed.</div>
                 </div>
             </div>
 
@@ -118,9 +200,9 @@
                 </div>
 
                 <div class="d-flex gap-3">
-                    <a href="/transactions" class="btn btn-outline-secondary flex-grow-1 py-3">Cancel</a>
-                    <button type="submit" class="btn btn-dark flex-grow-1 py-3 fw-bold">
-                        Save Transaction
+                    <a href="/transactions" class="btn btn-cancel flex-grow-1 py-3">Cancel</a>
+                    <button type="submit" class="btn btn-primary-custom flex-grow-1 py-3">
+                        <i class="fas fa-save me-2"></i>Save Transaction
                     </button>
                 </div>
             </form>

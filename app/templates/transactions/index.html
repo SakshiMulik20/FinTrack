@@ -1,12 +1,105 @@
-
-
 {% extends "base.html" %}
 {% block title %}Transactions - FinTrack{% endblock %}
 
 {% block content %}
+<style>
+.sidebar-link { color:#475569 !important; border-radius:8px; padding:10px 14px !important; transition:.2s; text-decoration:none; }
+.sidebar-link:hover { background:#f0fafd; color:#0f2942 !important; }
+.sidebar-link.active { background:linear-gradient(135deg,#d4e8f0,#b8d8e6); color:#0f2942 !important; font-weight:600; border-left:3px solid #0891b2; }
+.sidebar-link i { color:#0891b2; }
+.sidebar-link.text-danger i { color:#dc2626; }
+
+.form-control, .form-select {
+  border:1.5px solid #d4e2ec !important;
+  border-radius:10px !important;
+  background:#f8fafc !important;
+  transition:.2s;
+}
+.form-control:focus, .form-select:focus {
+  border-color:#0891b2 !important;
+  box-shadow:0 0 0 3px rgba(8,145,178,.15) !important;
+  background:#fff !important;
+}
+
+.btn-primary-custom {
+  background:linear-gradient(135deg,#15304f 0%,#1f4a64 100%) !important;
+  border:none !important;
+  color:#fff !important;
+  border-radius:10px !important;
+  font-weight:600;
+  transition:.2s;
+}
+.btn-primary-custom:hover {
+  background:linear-gradient(135deg,#0891b2 0%,#0e7490 100%) !important;
+  transform:translateY(-2px);
+  box-shadow:0 8px 20px rgba(8,145,178,.3);
+  color:#fff !important;
+}
+
+.search-card {
+  border-radius:16px;
+  border:none;
+  background:#fff;
+}
+
+.transaction-item {
+  border-radius:14px !important;
+  border:1px solid #e2eaf2 !important;
+  transition:.2s;
+}
+.transaction-item:hover {
+  transform:translateY(-2px);
+  border-color:#0891b2 !important;
+  box-shadow:0 12px 25px rgba(15,41,66,.08) !important;
+}
+
+.txn-icon {
+  width:48px; height:48px;
+  background:linear-gradient(135deg,#d4e8f0,#e0f2fe);
+  border-radius:12px;
+  color:#0891b2;
+  font-size:1.2rem;
+  display:flex; align-items:center; justify-content:center;
+}
+
+.txn-title { color:#0f2942; }
+.txn-cat-badge {
+  background:#f0fafd !important;
+  color:#0f2942 !important;
+  font-weight:600;
+  border:1px solid #d4e2ec;
+}
+
+.text-income  { color:#047857 !important; }
+.text-expense { color:#b91c1c !important; }
+
+.btn-delete-icon {
+  width:35px; height:35px;
+  border:1.5px solid #fecaca;
+  border-radius:8px;
+  background:#fff5f5;
+  color:#dc2626;
+  display:flex; align-items:center; justify-content:center;
+  transition:.2s;
+}
+.btn-delete-icon:hover {
+  background:#fee2e2;
+  border-color:#dc2626;
+  color:#b91c1c;
+}
+
+.empty-card { border-radius:16px; border:none; background:#fff; color:#64748b; }
+.empty-card i { color:#0891b2; }
+.empty-card a { color:#0891b2 !important; text-decoration:none; }
+.empty-card a:hover { color:#0e7490 !important; }
+</style>
+
 <div class="d-flex">
-    <div class="sidebar d-flex flex-column p-3" style="width:240px; min-height:100vh; background:#fff; border-right:1px solid #eee;">
-        <a class="navbar-brand fw-bold mb-4 ps-2" href="/"><span style="color:#6c63ff;">Fin</span>Track</a>
+    <!-- Sidebar -->
+    <div class="sidebar d-flex flex-column p-3" style="width:240px; min-height:100vh; background:#fff; border-right:1px solid #d4e2ec;">
+        <a class="navbar-brand fw-bold mb-4 ps-2" href="/" style="color:#0f2942;">
+            <i class="fas fa-chart-line me-2" style="color:#0891b2;"></i>FinTrack
+        </a>
         <nav class="nav flex-column gap-1">
             <a href="/dashboard" class="nav-link sidebar-link"><i class="fas fa-home me-2"></i> Dashboard</a>
             <a href="/transactions" class="nav-link sidebar-link active"><i class="fas fa-exchange-alt me-2"></i> Transactions</a>
@@ -20,18 +113,21 @@
         </div>
     </div>
 
-    <div class="flex-grow-1 p-4" style="background:#f8f9fa;">
+    <!-- Main -->
+    <div class="flex-grow-1 p-4" style="background:#f8fafc; min-height:100vh;">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="fw-bold mb-0">Transactions</h1>
-            <a href="/transactions/add" class="btn btn-primary px-4">
+            <h1 class="fw-bold mb-0" style="color:#0f2942;">
+                <i class="fas fa-exchange-alt me-2" style="color:#0891b2;"></i>Transactions
+            </h1>
+            <a href="/transactions/add" class="btn btn-primary-custom px-4 py-2 shadow-sm">
                 <i class="fas fa-plus me-2"></i>Add Transaction
             </a>
         </div>
 
-        <div class="card border-0 shadow-sm p-3 mb-4">
-            <form method="GET" action="/transactions" class="d-flex gap-3">
+        <div class="card search-card shadow-sm p-3 mb-4">
+            <form method="GET" action="/transactions" class="d-flex gap-3 flex-wrap">
                 <input type="text" name="search" value="{{ search }}"
-                       class="form-control" placeholder="Search transactions...">
+                       class="form-control flex-grow-1" placeholder="Search transactions...">
                 <select name="account_id" class="form-select" style="max-width:200px;">
                     <option value="">All Accounts</option>
                     {% for account in accounts %}
@@ -40,38 +136,53 @@
                     </option>
                     {% endfor %}
                 </select>
-                <button type="submit" class="btn btn-primary px-4">Search</button>
+                <button type="submit" class="btn btn-primary-custom px-4">
+                    <i class="fas fa-search me-2"></i>Search
+                </button>
             </form>
         </div>
 
-        <div class="card border-0 shadow-sm">
+        <div class="transaction-container">
             {% if transactions %}
                 {% for t in transactions %}
-                <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
-                    <div>
-                        <div class="fw-semibold">{{ t.description or 'Transaction' }}</div>
-                        <div class="text-muted small">
-                            {{ t.transaction_date.strftime('%b %d, %Y') }}
-                            {% if t.category %} · {{ t.category.icon }} {{ t.category.name }}{% endif %}
+                <div class="transaction-item d-flex justify-content-between align-items-center p-3 mb-3 bg-white shadow-sm">
+                    <div class="d-flex align-items-center">
+                        <div class="me-3 txn-icon">
+                            {{ t.category.icon if t.category else '💰' }}
+                        </div>
+                        <div>
+                            <div class="fw-bold txn-title">{{ t.description or 'Transaction' }}</div>
+                            <div class="small" style="color:#64748b;">
+                                {{ t.transaction_date.strftime('%b %d, %Y') }}
+                                {% if t.category %}
+                                    • <span class="badge txn-cat-badge fw-normal px-2 py-1">{{ t.category.name }}</span>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
-                    <div class="d-flex align-items-center gap-3">
-                        <span class="fw-bold {% if t.transaction_type == 'income' %}text-success{% else %}text-danger{% endif %}">
-                            {% if t.transaction_type == 'income' %}+{% else %}-{% endif %}₹{{ "%.2f"|format(t.amount) }}
-                        </span>
+
+                    <div class="d-flex align-items-center gap-4">
+                        <div class="text-end">
+                            <span class="fw-bold fs-5 {% if t.transaction_type == 'income' %}text-income{% else %}text-expense{% endif %}">
+                                {% if t.transaction_type == 'income' %}+{% else %}-{% endif %}₹{{ "%.2f"|format(t.amount) }}
+                            </span>
+                        </div>
+
                         <form method="POST" action="/transactions/delete/{{ t.id }}"
                               onsubmit="return confirm('Delete this transaction?')">
-                            <button class="btn btn-sm btn-outline-danger">
-                                <i class="fas fa-trash"></i>
+                            <button class="btn p-0 border-0 bg-transparent" type="submit">
+                                <div class="btn-delete-icon">
+                                    <i class="fas fa-trash-alt"></i>
+                                </div>
                             </button>
                         </form>
                     </div>
                 </div>
                 {% endfor %}
             {% else %}
-                <div class="text-center text-muted py-5">
-                    <i class="fas fa-receipt fa-3x mb-3"></i>
-                    <p>No transactions found. <a href="/transactions/add">Add your first one!</a></p>
+                <div class="empty-card text-center py-5 shadow-sm">
+                    <i class="fas fa-receipt fa-3x mb-3 opacity-50"></i>
+                    <p class="mb-0">No transactions found. <a href="/transactions/add" class="fw-bold">Add your first one!</a></p>
                 </div>
             {% endif %}
         </div>

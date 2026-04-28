@@ -7,24 +7,80 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #0f2942; }
+
+        /* Themed toast notifications */
+        .toast-themed {
+            border: none !important;
+            border-radius: 12px !important;
+            box-shadow: 0 12px 30px rgba(15,41,66,.18) !important;
+            min-width: 320px;
+        }
+        .toast-success {
+            background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%) !important;
+            color: #fff !important;
+        }
+        .toast-error {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+            color: #fff !important;
+        }
+        .toast-info {
+            background: linear-gradient(135deg, #15304f 0%, #1f4a64 100%) !important;
+            color: #fff !important;
+        }
+        .toast-themed .btn-close {
+            filter: brightness(0) invert(1);
+            opacity: .85;
+        }
+        .toast-themed .btn-close:hover { opacity: 1; }
+    </style>
 </head>
 <body>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <div class="container mt-3">
+
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100;">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
                 {% for category, message in messages %}
-                    <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show">
-                        {{ message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    {% if category == 'error' or category == 'danger' %}
+                        {% set toast_class = 'toast-error' %}
+                        {% set toast_icon = 'fa-exclamation-circle' %}
+                    {% elif category == 'info' or category == 'warning' %}
+                        {% set toast_class = 'toast-info' %}
+                        {% set toast_icon = 'fa-info-circle' %}
+                    {% else %}
+                        {% set toast_class = 'toast-success' %}
+                        {% set toast_icon = 'fa-check-circle' %}
+                    {% endif %}
+                    <div class="toast show align-items-center toast-themed {{ toast_class }}" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="d-flex">
+                            <div class="toast-body fw-semibold">
+                                <i class="fas {{ toast_icon }} me-2"></i>
+                                {{ message }}
+                            </div>
+                            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
                     </div>
                 {% endfor %}
-            </div>
-        {% endif %}
-    {% endwith %}
+            {% endif %}
+        {% endwith %}
+    </div>
 
-    {% block content %}{% endblock %}
+    <main>
+        {% block content %}{% endblock %}
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+            var toastList = toastElList.map(function (toastEl) {
+                return new bootstrap.Toast(toastEl, { delay: 4000 });
+            });
+        });
+    </script>
+
     {% block scripts %}{% endblock %}
 </body>
 </html>

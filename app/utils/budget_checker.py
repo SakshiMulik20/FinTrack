@@ -4,7 +4,6 @@ from app.models.budget import Budget
 from app.models.transaction import Transaction
 from app.models.account import Account
 from app.models.user import User
-from app.models.category import Category
 from app.utils.email_sender import send_budget_alert
 
 # Cooldown: prevents duplicate alerts. Set to 1 for testing, 60 for production.
@@ -13,29 +12,35 @@ _alert_cooldown = {}
 
 
 def _get_user_name(user):
-    return (getattr(user, 'name', None) or
+    return (getattr(user, 'full_name', None) or
+            getattr(user, 'name', None) or
             getattr(user, 'username', None) or
             getattr(user, 'first_name', None) or
             user.email)
 
 
-def _get_spent(user_id, category_id, now):
-    account_ids = [a.id for a in Account.query.filter_by(user_id=user_id).all()]
-    if not account_ids:
+def _get_default_account_id(user_id):
+    acc = Account.query.filter_by(user_id=user_id, is_default=True).first()
+    return acc.id if acc else None
+
+
+def _get_total_spent(user_id, now):
+    """Sum ALL expenses this month, only from the default (active) account."""
+    account_id = _get_default_account_id(user_id)
+    if not account_id:
         return 0.0
-    spent = db.session.query(
+    total = db.session.query(
         db.func.sum(Transaction.amount)
     ).filter(
-        Transaction.account_id.in_(account_ids),
+        Transaction.account_id == account_id,
         Transaction.transaction_type == 'expense',
-        Transaction.category_id == category_id,
         db.func.extract('month', Transaction.transaction_date) == now.month,
         db.func.extract('year', Transaction.transaction_date) == now.year
     ).scalar()
-    return float(spent or 0.0)
+    return float(total or 0.0)
 
 
-def _send_alert_if_needed(user_id, budget, category_name, spent):
+def _send_alert_if_needed(user_id, budget, spent):
     if not budget.amount_limit or float(budget.amount_limit) <= 0:
         return
 
@@ -46,10 +51,10 @@ def _send_alert_if_needed(user_id, budget, category_name, spent):
     elif percent >= 80:
         alert_type = 'warning'
     else:
-        print(f"[BUDGET] {category_name}: {percent:.1f}% — below threshold")
+        print(f"[BUDGET] Monthly Total: {percent:.1f}% — below threshold")
         return
 
-    cooldown_key = (user_id, budget.category_id, alert_type)
+    cooldown_key = (user_id, alert_type)
     last_sent = _alert_cooldown.get(cooldown_key)
     if last_sent and datetime.utcnow() - last_sent < timedelta(minutes=COOLDOWN_MINUTES):
         mins_ago = int((datetime.utcnow() - last_sent).seconds / 60)
@@ -62,86 +67,54 @@ def _send_alert_if_needed(user_id, budget, category_name, spent):
 
     user_name = _get_user_name(user)
     result = send_budget_alert(
-        user.email, user_name, category_name,
+        user.email, user_name, 'Monthly Total',
         spent, float(budget.amount_limit), percent, alert_type
     )
 
     if result:
         _alert_cooldown[cooldown_key] = datetime.utcnow()
-        print(f"[BUDGET] {alert_type.upper()} alert sent → {user.email} | {category_name} | {percent:.1f}%")
+        print(f"[BUDGET] {alert_type.upper()} alert sent → {user.email} | {percent:.1f}%")
     else:
         print(f"[BUDGET] Email FAILED — check .env credentials")
 
-def check_budget_for_user(user_id, category_name):
-    """Called immediately after an expense transaction is saved."""
+
+def check_budget_for_user(user_id, category_name=None):
+    """Called immediately after an expense transaction is saved.
+    Only checks the Monthly Total budget against the default account's spending."""
     now = datetime.utcnow()
 
-    # Try category-specific budget first
-    category = Category.query.filter_by(name=category_name).first()
-    if category:
-        budget = Budget.query.filter_by(
-            user_id=user_id,
-            category_id=category.id
-        ).first()
-
-        if budget:
-            spent = _get_spent(user_id, category.id, now)
-            print(f"[BUDGET] Category budget — {category_name}: Rs.{spent:.0f} / Rs.{budget.amount_limit:.0f}")
-            _send_alert_if_needed(user_id, budget, category_name, spent)
-            return
-
-    # Fallback: check total monthly budget (category_id is None)
     total_budget = Budget.query.filter_by(
         user_id=user_id,
-        category_id=None
+        category_id=None,
+        month=now.month,
+        year=now.year
     ).first()
 
     if not total_budget:
-        print(f"[BUDGET] No budget found for user_id={user_id}")
+        print(f"[BUDGET] No Monthly Total budget set for user_id={user_id}")
         return
 
-    # Sum ALL expenses this month
-    account_ids = [a.id for a in Account.query.filter_by(user_id=user_id).all()]
-    total_spent = db.session.query(
-        db.func.sum(Transaction.amount)
-    ).filter(
-        Transaction.account_id.in_(account_ids),
-        Transaction.transaction_type == 'expense',
-        db.func.extract('month', Transaction.transaction_date) == now.month,
-        db.func.extract('year', Transaction.transaction_date) == now.year
-    ).scalar()
-    total_spent = float(total_spent or 0.0)
+    total_spent = _get_total_spent(user_id, now)
+    print(f"[BUDGET] Monthly Total (default account) — spent=₹{total_spent:.0f}, limit=₹{total_budget.amount_limit:.0f}")
+    _send_alert_if_needed(user_id, total_budget, total_spent)
 
-    print(f"[BUDGET] Total budget — spent=Rs.{total_spent:.0f}, limit=Rs.{total_budget.amount_limit:.0f}")
-    _send_alert_if_needed(user_id, total_budget, 'Monthly Total', total_spent)
 
 def check_all_budgets():
-    """Periodic check — runs every hour via APScheduler."""
+    """Periodic check — runs every hour via APScheduler.
+    Only checks each user's Monthly Total budget."""
     now = datetime.utcnow()
     print(f"[BUDGET] Hourly check at {now.strftime('%H:%M')}")
-    budgets = Budget.query.all()
 
-    for budget in budgets:
+    total_budgets = Budget.query.filter_by(
+        category_id=None,
+        month=now.month,
+        year=now.year
+    ).all()
+
+    for budget in total_budgets:
         try:
-            if budget.category_id:
-                category = Category.query.get(budget.category_id)
-                if not category:
-                    continue
-                spent = _get_spent(budget.user_id, budget.category_id, now)
-                _send_alert_if_needed(budget.user_id, budget, category.name, spent)
-            else:
-                # Total monthly budget
-                account_ids = [a.id for a in Account.query.filter_by(user_id=budget.user_id).all()]
-                total_spent = db.session.query(
-                    db.func.sum(Transaction.amount)
-                ).filter(
-                    Transaction.account_id.in_(account_ids),
-                    Transaction.transaction_type == 'expense',
-                    db.func.extract('month', Transaction.transaction_date) == now.month,
-                    db.func.extract('year', Transaction.transaction_date) == now.year
-                ).scalar()
-                _send_alert_if_needed(budget.user_id, budget, 'Monthly Total', float(total_spent or 0.0))
-
+            total_spent = _get_total_spent(budget.user_id, now)
+            _send_alert_if_needed(budget.user_id, budget, total_spent)
         except Exception as e:
             print(f"[BUDGET] Error for budget {budget.id}: {e}")
             continue

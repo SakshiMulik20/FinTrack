@@ -2,10 +2,36 @@
 {% block title %}Dashboard - FinTrack{% endblock %}
 
 {% block content %}
+
+<style>
+.sidebar-link { color:#475569 !important; border-radius:8px; padding:10px 14px !important; transition:.2s; }
+.sidebar-link:hover { background:#f0fafd; color:#0f2942 !important; }
+.sidebar-link.active { background:linear-gradient(135deg,#d4e8f0,#b8d8e6); color:#0f2942 !important; font-weight:600; border-left:3px solid #0891b2; }
+.sidebar-link i { color:#0891b2; }
+.sidebar-link.text-danger i { color:#dc2626; }
+.btn-brand { background:linear-gradient(135deg,#15304f 0%,#1f4a64 100%); color:#fff; border:none; border-radius:10px; font-weight:600; transition:.2s; }
+.btn-brand:hover { background:linear-gradient(135deg,#0891b2 0%,#0e7490 100%); color:#fff; transform:translateY(-2px); box-shadow:0 6px 16px rgba(8,145,178,.3); }
+.btn-outline-brand { color:#0f2942; border:1.5px solid #0f2942; background:#fff; border-radius:8px; font-weight:600; }
+.btn-outline-brand:hover { background:#0f2942; color:#fff; }
+.flex-grow-1 { background:#f8fafc !important; }
+.card { border:1px solid #d4e2ec !important; }
+h1, h6, .fw-bold { color:#0f2942; }
+.form-check-input:checked {
+  background-color: #0891b2 !important;
+  border-color: #0891b2 !important;
+}
+.form-check-input:focus {
+  border-color: #0891b2 !important;
+  box-shadow: 0 0 0 .2rem rgba(8,145,178,.25) !important;
+}
+</style>
+
 <div class="d-flex">
 
-<div class="sidebar d-flex flex-column p-3" style="width:240px;min-height:100vh;background:#fff;border-right:1px solid #eee;position:sticky;top:0;height:100vh;">
-<a class="navbar-brand fw-bold mb-4 ps-2" href="/"><span style="color:#6c63ff;">Fin</span>Track</a>
+<div class="sidebar d-flex flex-column p-3" style="width:240px;min-height:100vh;background:#fff;border-right:1px solid #d4e2ec;position:sticky;top:0;height:100vh;">
+<a class="navbar-brand fw-bold mb-4 ps-2" href="/" style="color:#0f2942;">
+<i class="fas fa-chart-line me-2" style="color:#0891b2;"></i>FinTrack
+</a>
 <nav class="nav flex-column gap-1">
 <a href="/dashboard" class="nav-link sidebar-link active"><i class="fas fa-home me-2"></i>Dashboard</a>
 <a href="/transactions" class="nav-link sidebar-link"><i class="fas fa-exchange-alt me-2"></i>Transactions</a>
@@ -19,12 +45,12 @@
 </div>
 </div>
 
-<div class="flex-grow-1" style="background:#f8f9fa;">
+<div class="flex-grow-1">
 
 <div class="d-flex justify-content-between align-items-center px-4 py-3 bg-white border-bottom shadow-sm">
-<span class="fw-semibold text-muted"><i class="fas fa-home me-2" style="color:#6c63ff;"></i>Dashboard</span>
+<span class="fw-semibold" style="color:#0f2942;"><i class="fas fa-home me-2" style="color:#0891b2;"></i>Dashboard</span>
 <div class="d-flex align-items-center gap-3">
-<a href="/transactions/add" class="btn btn-dark px-4 fw-semibold"><i class="fas fa-plus me-2"></i>Add Transaction</a>
+<a href="/transactions/add" class="btn btn-brand px-4"><i class="fas fa-plus me-2"></i>Add Transaction</a>
 <div class="dropdown">
 <button class="btn p-0 border-0 rounded-circle" data-bs-toggle="dropdown">
 {% if current_user.profile_photo %}
@@ -33,7 +59,7 @@
          style="width:40px; height:40px;" alt="Profile">
 {% else %}
     <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold text-white"
-         style="width:40px;height:40px;background:#6c63ff;font-size:1rem;">
+         style="width:40px;height:40px;background:linear-gradient(135deg,#0f2942,#0891b2);font-size:1rem;">
         {{ current_user.full_name[0].upper() }}
     </div>
 {% endif %}
@@ -46,12 +72,12 @@
          style="width:40px; height:40px;" alt="Profile">
 {% else %}
     <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold text-white"
-         style="width:40px; height:40px; background:#6c63ff; font-size:1rem;">
+         style="width:40px; height:40px; background:linear-gradient(135deg,#0f2942,#0891b2); font-size:1rem;">
         {{ current_user.full_name[0].upper() }}
     </div>
 {% endif %}
 <div>
-<div class="fw-bold" style="font-size:0.9rem;">{{ current_user.full_name }}</div>
+<div class="fw-bold" style="font-size:0.9rem;color:#0f2942;">{{ current_user.full_name }}</div>
 <div class="text-muted" style="font-size:0.78rem;">{{ current_user.email }}</div>
 </div>
 </li>
@@ -64,7 +90,7 @@
 </div>
 
 <div class="p-4">
-<h1 class="fw-bold mb-4">Dashboard</h1>
+<h1 class="fw-bold mb-4" style="color:#0f2942;">Dashboard</h1>
 
 {% with messages = get_flashed_messages(with_categories=true) %}
 {% if messages %}
@@ -78,56 +104,56 @@
 {% endwith %}
 
 <!-- Budget -->
-<div class="card border-0 shadow-sm p-4 mb-4">
+<div class="card border-0 shadow-sm p-4 mb-4" style="border-radius:14px;">
 {% if default_account %}
 <div class="d-flex justify-content-between align-items-center mb-2">
 <span class="fw-semibold text-muted">Monthly Budget (Default Account: {{ default_account.name }})</span>
-<a href="/budgets" class="text-muted"><i class="fas fa-pen small"></i></a>
+<a href="/budgets" style="color:#0f2942;"><i class="fas fa-pen small"></i></a>
 </div>
 <div class="d-flex justify-content-between mb-2">
-<span class="fw-bold">₹{{ "%.2f"|format(total_spent) }} of ₹{{ "%.2f"|format(budget_limit) }} spent</span>
+<span class="fw-bold" style="color:#0f2942;">₹{{ "%.2f"|format(total_spent) }} of ₹{{ "%.2f"|format(budget_limit) }} spent</span>
 <span class="text-muted small">{{ budget_percent }}% used</span>
 </div>
 <div class="progress" style="height:10px;border-radius:10px;">
-<div class="progress-bar {% if budget_percent >= 90 %}bg-danger{% elif budget_percent >= 70 %}bg-warning{% else %}bg-primary{% endif %}" style="width:{{ budget_percent }}%;border-radius:10px;"></div>
+<div class="progress-bar {% if budget_percent >= 90 %}bg-danger{% elif budget_percent >= 70 %}bg-warning{% endif %}" style="width:{{ budget_percent }}%;border-radius:10px;{% if budget_percent < 70 %}background:linear-gradient(90deg,#0891b2,#0e7490);{% endif %}"></div>
 </div>
 {% else %}
 <div class="d-flex justify-content-between align-items-center">
 <span class="text-muted">No accounts found.</span>
-<a href="/accounts/add" class="btn btn-sm btn-primary">Add Account</a>
+<a href="/accounts/add" class="btn btn-sm btn-brand">Add Account</a>
 </div>
 {% endif %}
 </div>
 
 <!-- AI Prediction Card -->
 {% if prediction %}
-<div class="card border-0 shadow-sm mb-4" style="border-radius:12px; overflow:hidden;">
+<div class="card border-0 shadow-sm mb-4" style="border-radius:14px; overflow:hidden;background:linear-gradient(135deg,#e8f0f5,#d4e2ec);border:1px solid #b8d8e6 !important;">
     <div class="card-body p-0">
         <div class="d-flex align-items-stretch">
             <div class="p-4 flex-grow-1">
                 <div class="d-flex align-items-center gap-2 mb-1">
-                    <i class="fas fa-robot" style="color:#6c63ff;"></i>
-                    <span class="fw-semibold text-muted" style="font-size:0.82rem; text-transform:uppercase; letter-spacing:0.5px;">AI Prediction</span>
+                    <i class="fas fa-robot" style="color:#0891b2;"></i>
+                    <span class="fw-semibold" style="font-size:0.82rem; text-transform:uppercase; letter-spacing:0.5px;color:#0f2942;">AI Prediction</span>
                 </div>
-                <h6 class="fw-bold mb-1" style="font-size:1rem;">{{ prediction.next_month }}</h6>
+                <h6 class="fw-bold mb-1" style="font-size:1rem;color:#0f2942;">{{ prediction.next_month }}</h6>
                 <p class="mb-0 text-muted" style="font-size:0.88rem;">
                     Next month, your expenses might be around
                     <span class="fw-bold text-danger">₹{{ "{:,.0f}".format(prediction.total_expense) }}</span>
                 </p>
                 {% if prediction.savings >= 0 %}
-                <p class="mb-0 mt-1" style="font-size:0.85rem; color:#27ae60;">
+                <p class="mb-0 mt-1" style="font-size:0.85rem; color:#047857;">
                     <i class="fas fa-piggy-bank me-1"></i> You could save around ₹{{ "{:,.0f}".format(prediction.savings) }}
                 </p>
                 {% else %}
-                <p class="mb-0 mt-1" style="font-size:0.85rem; color:#e74c3c;">
+                <p class="mb-0 mt-1" style="font-size:0.85rem; color:#b91c1c;">
                     <i class="fas fa-exclamation-circle me-1"></i> You may overspend by ₹{{ "{:,.0f}".format(prediction.savings|abs) }}
                 </p>
                 {% endif %}
             </div>
-            <div class="d-flex align-items-center px-4 border-start">
+            <div class="d-flex align-items-center px-4 border-start" style="border-color:#b8d8e6 !important;">
                 <form method="POST" action="/dashboard/send-report">
                     <button type="submit" class="btn btn-sm px-3"
-                            style="background:#f3f2ff; color:#6c63ff; border:none; font-size:0.82rem; white-space:nowrap;">
+                            style="background:#fff; color:#0f2942; border:1.5px solid #0891b2; font-size:0.82rem; white-space:nowrap;border-radius:8px;font-weight:600;">
                         <i class="fas fa-envelope me-1"></i> Send Full Report
                     </button>
                 </form>
@@ -140,23 +166,23 @@
 <!-- Transactions + Chart -->
 <div class="row g-4 mb-4">
 <div class="col-lg-6">
-<div class="card border-0 shadow-sm p-4 h-100">
+<div class="card border-0 shadow-sm p-4 h-100" style="border-radius:14px;">
 <div class="d-flex justify-content-between align-items-center mb-3">
-<h6 class="fw-bold mb-0">Recent Transactions</h6>
+<h6 class="fw-bold mb-0" style="color:#0f2942;">Recent Transactions</h6>
 <div class="d-flex align-items-center gap-2">
 <select class="form-select form-select-sm" style="width:140px;" onchange="window.location='/dashboard?account_id='+this.value">
 {% for a in accounts %}
 <option value="{{ a.id }}" {% if view_account and a.id == view_account.id %}selected{% endif %}>{{ a.name }}</option>
 {% endfor %}
 </select>
-<a href="/transactions" class="btn btn-sm btn-outline-primary">View All</a>
+<a href="/transactions" class="btn btn-sm btn-outline-brand">View All</a>
 </div>
 </div>
 {% if recent_transactions %}
 {% for t in recent_transactions %}
 <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
 <div>
-<div class="fw-semibold small">{{ t.description or 'Transaction' }}</div>
+<div class="fw-semibold small" style="color:#0f2942;">{{ t.description or 'Transaction' }}</div>
 <div class="text-muted" style="font-size:0.75rem;">{{ t.transaction_date.strftime('%b %d, %Y') }}</div>
 </div>
 <span class="fw-bold {% if t.transaction_type == 'income' %}text-success{% else %}text-danger{% endif %}">
@@ -166,22 +192,22 @@
 {% endfor %}
 {% else %}
 <div class="text-center text-muted py-4">
-<i class="fas fa-receipt fa-2x mb-2"></i>
-<p class="small">No transactions yet. <a href="/transactions/add">Add one!</a></p>
+<i class="fas fa-receipt fa-2x mb-2" style="color:#0891b2;"></i>
+<p class="small">No transactions yet. <a href="/transactions/add" style="color:#0f2942;font-weight:600;">Add one!</a></p>
 </div>
 {% endif %}
 </div>
 </div>
 <div class="col-lg-6">
-<div class="card border-0 shadow-sm p-4 h-100">
-<h6 class="fw-bold mb-3">Monthly Expense Breakdown
+<div class="card border-0 shadow-sm p-4 h-100" style="border-radius:14px;">
+<h6 class="fw-bold mb-3" style="color:#0f2942;">Monthly Expense Breakdown
 {% if view_account %}<small class="text-muted fw-normal">({{ view_account.name }})</small>{% endif %}
 </h6>
 {% if category_spending %}
 <canvas id="pieChart"></canvas>
 {% else %}
 <div class="text-center text-muted py-4">
-<i class="fas fa-chart-pie fa-2x mb-2"></i>
+<i class="fas fa-chart-pie fa-2x mb-2" style="color:#0891b2;"></i>
 <p class="small">No expense data yet.</p>
 </div>
 {% endif %}
@@ -190,16 +216,16 @@
 </div>
 
 <!-- Account Cards -->
-<h6 class="fw-bold mb-3">My Accounts</h6>
+<h6 class="fw-bold mb-3" style="color:#0f2942;">My Accounts</h6>
 <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
 <div class="col">
 <a href="/accounts/add" class="text-decoration-none">
-<div class="card border-0 shadow-sm p-4 d-flex align-items-center justify-content-center" style="min-height:170px;border:2px dashed #ced4da !important;background:#fff;cursor:pointer;" onmouseover="this.style.borderColor='#6c63ff'" onmouseout="this.style.borderColor='#ced4da'">
+<div class="card border-0 shadow-sm p-4 d-flex align-items-center justify-content-center" style="min-height:170px;border:2px dashed #b8d8e6 !important;background:#fff;cursor:pointer;border-radius:14px;" onmouseover="this.style.borderColor='#0891b2'" onmouseout="this.style.borderColor='#b8d8e6'">
 <div class="text-center text-muted">
-<div class="rounded-circle d-flex align-items-center justify-content-center mx-auto mb-2" style="width:44px;height:44px;background:#f0eeff;">
-<i class="fas fa-plus" style="color:#6c63ff;"></i>
+<div class="rounded-circle d-flex align-items-center justify-content-center mx-auto mb-2" style="width:44px;height:44px;background:#d4e8f0;">
+<i class="fas fa-plus" style="color:#0891b2;"></i>
 </div>
-<div class="small fw-semibold">Add New Account</div>
+<div class="small fw-semibold" style="color:#0f2942;">Add New Account</div>
 </div>
 </div>
 </a>
@@ -207,10 +233,11 @@
 
 {% for item in account_data %}
 <div class="col">
-<div class="card border-0 shadow-sm p-4" style="min-height:170px;">
+<div class="card border-0 shadow-sm p-4" style="min-height:170px;border-radius:14px;">
 <div class="d-flex justify-content-between align-items-center mb-3">
-<span class="fw-semibold small" style="color:#555;">{{ item.account.name }}</span>
-<form method="POST" action="/accounts/set-default/{{ item.account.id }}">
+<span class="fw-semibold small" style="color:#0f2942;">{{ item.account.name }}</span>
+<div class="d-flex align-items-center gap-2">
+<form method="POST" action="/accounts/set-default/{{ item.account.id }}" class="mb-0">
 <div class="form-check form-switch mb-0" title="Set as default account">
 <input class="form-check-input" type="checkbox" role="switch"
 onchange="this.form.submit()"
@@ -218,18 +245,29 @@ onchange="this.form.submit()"
 style="cursor:pointer;width:2.5em;height:1.3em;">
 </div>
 </form>
+<form method="POST" action="/accounts/delete/{{ item.account.id }}" class="mb-0"
+onsubmit="return confirm('Delete account &quot;{{ item.account.name }}&quot;?\n\nAll linked transactions, recurring entries, and budgets will also be deleted. This cannot be undone.');">
+<button type="submit" class="btn btn-sm p-0 border-0 bg-transparent" title="Delete account">
+<div style="width:30px;height:30px;border:1.5px solid #fecaca;border-radius:8px;background:#fff5f5;color:#dc2626;display:flex;align-items:center;justify-content:center;transition:.2s;"
+onmouseover="this.style.background='#fee2e2';this.style.borderColor='#dc2626';"
+onmouseout="this.style.background='#fff5f5';this.style.borderColor='#fecaca';">
+<i class="fas fa-trash-alt" style="font-size:0.75rem;"></i>
 </div>
-<div class="fw-bold mb-1" style="font-size:1.6rem;color:{% if item.real_balance < 0 %}#e74c3c{% else %}#2d3748{% endif %};">
+</button>
+</form>
+</div>
+</div>
+<div class="fw-bold mb-1" style="font-size:1.6rem;color:{% if item.real_balance < 0 %}#b91c1c{% else %}#0f2942{% endif %};">
 ₹{{ "%.2f"|format(item.real_balance) }}
 </div>
 <div class="text-muted small mb-3">{{ item.account.account_type }}</div>
 <div class="d-flex justify-content-between">
 <div>
-<div class="text-success fw-semibold small"><i class="fas fa-arrow-up me-1"></i>Income</div>
+<div class="fw-semibold small" style="color:#047857;"><i class="fas fa-arrow-up me-1"></i>Income</div>
 <div class="fw-semibold small">₹{{ "%.2f"|format(item.income) }}</div>
 </div>
 <div class="text-end">
-<div class="text-danger fw-semibold small"><i class="fas fa-arrow-down me-1"></i>Expense</div>
+<div class="fw-semibold small" style="color:#b91c1c;"><i class="fas fa-arrow-down me-1"></i>Expense</div>
 <div class="fw-semibold small">₹{{ "%.2f"|format(item.expense) }}</div>
 </div>
 </div>
@@ -254,7 +292,7 @@ data: {
 labels: [{% for c in category_spending %}'{{ c.name }}'{% if not loop.last %},{% endif %}{% endfor %}],
 datasets: [{
 data: [{% for c in category_spending %}{{ c.amount }}{% if not loop.last %},{% endif %}{% endfor %}],
-backgroundColor: ['#6c63ff','#ff6584','#43b89c','#f7931e','#2196f3','#e91e63','#00bcd4','#ff5722']
+backgroundColor: ['#0f2942','#0891b2','#0e7490','#155e75','#0c4a6e','#1e3a5f','#2d6b7a','#5fb8b8']
 }]
 },
 options: {

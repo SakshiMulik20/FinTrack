@@ -2,9 +2,45 @@
 {% block title %}Analytics - FinTrack{% endblock %}
 
 {% block content %}
+<style>
+.sidebar-link { color:#475569 !important; border-radius:8px; padding:10px 14px !important; transition:.2s; text-decoration:none; }
+.sidebar-link:hover { background:#f0fafd; color:#0f2942 !important; }
+.sidebar-link.active { background:linear-gradient(135deg,#d4e8f0,#b8d8e6); color:#0f2942 !important; font-weight:600; border-left:3px solid #0891b2; }
+.sidebar-link i { color:#0891b2; }
+.sidebar-link.text-danger i { color:#dc2626; }
+
+.form-select {
+  border:1.5px solid #d4e2ec !important;
+  border-radius:10px !important;
+  background:#f8fafc !important;
+  color:#0f2942;
+  transition:.2s;
+}
+.form-select:focus {
+  border-color:#0891b2 !important;
+  box-shadow:0 0 0 3px rgba(8,145,178,.15) !important;
+  background:#fff !important;
+}
+
+.analytics-card {
+  border-radius:16px;
+  border:none;
+  background:#fff;
+  transition:.2s;
+}
+.analytics-card:hover { box-shadow:0 12px 30px rgba(15,41,66,.08); transform:translateY(-2px); }
+
+.section-title { color:#0f2942; font-weight:700; }
+.category-row { transition:.15s; border-radius:8px; padding:10px 12px !important; }
+.category-row:hover { background:#f0fafd; }
+</style>
+
 <div class="d-flex">
-    <div class="sidebar d-flex flex-column p-3" style="width:240px; min-height:100vh; background:#fff; border-right:1px solid #eee;">
-        <a class="navbar-brand fw-bold mb-4 ps-2" href="/"><span style="color:#6c63ff;">Fin</span>Track</a>
+    <!-- Sidebar -->
+    <div class="sidebar d-flex flex-column p-3" style="width:240px; min-height:100vh; background:#fff; border-right:1px solid #d4e2ec;">
+        <a class="navbar-brand fw-bold mb-4 ps-2" href="/" style="color:#0f2942;">
+            <i class="fas fa-chart-line me-2" style="color:#0891b2;"></i>FinTrack
+        </a>
         <nav class="nav flex-column gap-1">
             <a href="/dashboard" class="nav-link sidebar-link"><i class="fas fa-home me-2"></i> Dashboard</a>
             <a href="/transactions" class="nav-link sidebar-link"><i class="fas fa-exchange-alt me-2"></i> Transactions</a>
@@ -18,12 +54,15 @@
         </div>
     </div>
 
-    <div class="flex-grow-1 p-4" style="background:#f8f9fa;">
-        <h1 class="fw-bold mb-4">Analytics</h1>
+    <!-- Main -->
+    <div class="flex-grow-1 p-4" style="background:#fafbfc; min-height:100vh;">
+        <h1 class="fw-bold mb-4" style="color:#0f2942;">
+            <i class="fas fa-chart-bar me-2" style="color:#0891b2;"></i>Analytics
+        </h1>
 
-        <div class="card border-0 shadow-sm p-4 mb-4">
+        <div class="card analytics-card shadow-sm p-4 mb-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h6 class="fw-bold mb-0">Income vs Expenses</h6>
+                <h6 class="section-title mb-0">Income vs Expenses</h6>
                 <select id="viewSelect" class="form-select w-auto" onchange="loadChart(this.value)">
                     <option value="daily">Daily</option>
                     <option value="weekly">Weekly</option>
@@ -37,14 +76,14 @@
 
         <div class="row g-4">
             <div class="col-md-6">
-                <div class="card border-0 shadow-sm p-4">
-                    <h6 class="fw-bold mb-3">This Month's Spending by Category</h6>
+                <div class="card analytics-card shadow-sm p-4 h-100">
+                    <h6 class="section-title mb-3">This Month's Spending by Category</h6>
                     <canvas id="doughnutChart"></canvas>
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="card border-0 shadow-sm p-4">
-                    <h6 class="fw-bold mb-3">Category Breakdown</h6>
+                <div class="card analytics-card shadow-sm p-4 h-100">
+                    <h6 class="section-title mb-3">Category Breakdown</h6>
                     <div id="categoryList"></div>
                 </div>
             </div>
@@ -57,6 +96,8 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 let barChart, doughnutChart;
+
+const themePalette = ['#0891b2','#15304f','#22d3ee','#0e7490','#1f4a64','#67e8f9','#0f2942','#7dd3fc'];
 
 async function loadChart(view) {
     const res = await fetch(`/analytics/data?view=${view}`);
@@ -72,21 +113,24 @@ async function loadChart(view) {
                 {
                     label: 'Income (₹)',
                     data: data.income,
-                    backgroundColor: 'rgba(46, 204, 113, 0.7)',
+                    backgroundColor: 'rgba(8, 145, 178, 0.75)',
                     borderRadius: 6
                 },
                 {
                     label: 'Expenses (₹)',
                     data: data.expenses,
-                    backgroundColor: 'rgba(231, 76, 60, 0.7)',
+                    backgroundColor: 'rgba(15, 41, 66, 0.75)',
                     borderRadius: 6
                 }
             ]
         },
         options: {
             responsive: true,
-            plugins: { legend: { position: 'top' } },
-            scales: { y: { beginAtZero: true } }
+            plugins: { legend: { position: 'top', labels: { color: '#0f2942', font: { weight: '600' } } } },
+            scales: {
+                y: { beginAtZero: true, grid: { color: '#e2eaf2' }, ticks: { color: '#475569' } },
+                x: { grid: { display: false }, ticks: { color: '#475569' } }
+            }
         }
     });
 
@@ -99,24 +143,32 @@ async function loadChart(view) {
                 labels: data.categories.map(c => c.name),
                 datasets: [{
                     data: data.categories.map(c => c.amount),
-                    backgroundColor: ['#6c63ff','#ff6584','#43b89c','#f7931e','#2196f3','#e91e63','#00bcd4','#ff5722'],
+                    backgroundColor: themePalette,
+                    borderWidth: 2,
+                    borderColor: '#fff'
                 }]
             },
-            options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+            options: {
+                responsive: true,
+                plugins: { legend: { position: 'bottom', labels: { color: '#0f2942', font: { weight: '500' } } } }
+            }
         });
 
         const total = data.categories.reduce((s, c) => s + c.amount, 0);
-        document.getElementById('categoryList').innerHTML = data.categories.map(c => `
-            <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
-                <span class="fw-semibold">${c.name}</span>
+        document.getElementById('categoryList').innerHTML = data.categories.map((c, i) => `
+            <div class="d-flex justify-content-between align-items-center category-row">
+                <div class="d-flex align-items-center gap-2">
+                    <span style="width:10px;height:10px;border-radius:50%;background:${themePalette[i % themePalette.length]};display:inline-block;"></span>
+                    <span class="fw-semibold" style="color:#0f2942;">${c.name}</span>
+                </div>
                 <div class="text-end">
-                    <div class="fw-bold">₹${c.amount.toFixed(2)}</div>
-                    <small class="text-muted">${((c.amount/total)*100).toFixed(1)}%</small>
+                    <div class="fw-bold" style="color:#0f2942;">₹${c.amount.toFixed(2)}</div>
+                    <small style="color:#64748b;">${((c.amount/total)*100).toFixed(1)}%</small>
                 </div>
             </div>
         `).join('');
     } else {
-        document.getElementById('categoryList').innerHTML = '<p class="text-muted text-center py-4">No category data yet.</p>';
+        document.getElementById('categoryList').innerHTML = '<p class="text-center py-4" style="color:#64748b;">No category data yet.</p>';
     }
 }
 

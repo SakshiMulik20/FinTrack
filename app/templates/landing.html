@@ -1,61 +1,674 @@
 {% extends "base.html" %}
-{% block title %}FinTrack - Smart Personal Finance{% endblock %}
+{% block title %}FinTrack - Master Your Finances{% endblock %}
 
 {% block content %}
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-    <div class="container">
-        <a class="navbar-brand fw-bold" href="/">
-            <span style="color:#6c63ff;">Fin</span>Track
-        </a>
-        <div class="ms-auto">
-            <a href="/login" class="btn btn-outline-primary me-2">Login</a>
-            <a href="/register" class="btn btn-primary">Get Started</a>
-        </div>
-    </div>
+<style>
+.hero-gradient { background: linear-gradient(135deg, #1e3a5f 0%, #3599b3 60%, #5fb8b8 100%); position:relative; overflow:hidden; }
+.btn-cyan { background:#22d3ee; border:none; color:#003344; font-weight:600; border-radius:30px; padding:9px 30px; }
+.btn-cyan:hover { background:#06b6d4; color:#fff; }
+.btn-outline-cyan { border:2px solid #fff; color:#fff; background:transparent; border-radius:30px; padding:9px 30px; font-weight:600; }
+.btn-outline-cyan:hover { background:#fff; color:#1e3a5f; }
+.feature-card { background:#fff; border:1px solid #e5e7eb; border-radius:12px; padding:22px 18px; transition:.3s; height:100%; }
+.feature-card:hover { transform:translateY(-4px); box-shadow:0 8px 24px rgba(0,0,0,0.08); }
+.feature-icon { width:48px;height:48px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;margin-bottom:12px;font-size:1.3rem; }
+.section-label { color:#64748b; font-size:.9rem; letter-spacing:.5px; }
+.step-num { font-size:6rem;font-weight:800;color:#1e3a5f;line-height:1;font-family:'Segoe UI',Georgia,serif; }
+.step-illus-wrap { position:relative; width:90px; height:90px; }
+.step-person { font-size:2.8rem; color:#1e3a5f; }
+.step-device { font-size:2.2rem; color:#22d3ee; position:absolute; }
+.step-title { color:#1e3a5f; font-weight:700; }
+.howit-bg { 
+  background:
+    radial-gradient(circle at 15% 40%, rgba(255,255,255,.55) 0, transparent 20%),
+    radial-gradient(circle at 85% 60%, rgba(255,255,255,.5) 0, transparent 20%),
+    linear-gradient(135deg, #ecf6fa 0%, #e0f0f6 50%, #d6ebf2 100%);
+  position:relative; overflow:hidden;
+}
+.howit-bg::before {
+  content:""; position:absolute; inset:0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 200'><path d='M0 100 Q 200 40 400 100 T 800 100' stroke='%23bcd5e0' stroke-width='1.5' fill='none' opacity='.5'/><path d='M0 130 Q 200 70 400 130 T 800 130' stroke='%23bcd5e0' stroke-width='1.5' fill='none' opacity='.4'/><path d='M0 70 Q 200 130 400 70 T 800 70' stroke='%23bcd5e0' stroke-width='1.5' fill='none' opacity='.3'/></svg>");
+  background-size: 100% 100%; background-repeat:no-repeat; pointer-events:none;
+}
+.carousel-arrow { position:absolute; top:50%; transform:translateY(-50%); width:40px;height:40px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,.15);color:#1e3a5f;cursor:pointer;z-index:5;border:none; }
+.dot { display:inline-block; width:24px; height:5px; border-radius:3px; background:rgba(255,255,255,.4); margin:0 3px; }
+.dot.active { background:#fff; width:36px; }
+
+/* Phone mockup */
+.phone-wrap { position:relative; width:280px; margin:0 auto; }
+.phone-frame { background:linear-gradient(145deg,#1e293b,#475569); border-radius:36px; padding:12px; box-shadow:0 30px 60px rgba(0,0,0,.5); position:relative; z-index:2; }
+.phone-screen { background:linear-gradient(180deg,#fff,#f1f5f9); border-radius:26px; padding:16px; height:420px; overflow:hidden; }
+.float-icon { position:absolute; z-index:3; filter: drop-shadow(0 6px 10px rgba(0,0,0,.3)); }
+.coin { animation: bob 3s ease-in-out infinite; }
+.card-icon { animation: bob 3.5s ease-in-out infinite .5s; }
+.piggy { animation: bob 3.2s ease-in-out infinite 1s; }
+.rupee-anim { animation: bob 3.4s ease-in-out infinite .3s; }
+.pie-anim { animation: bob 3.6s ease-in-out infinite .7s; }
+.dollar-anim { animation: bob 3.8s ease-in-out infinite 1.2s; }
+@keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+.benefits-bg {
+  background:
+    radial-gradient(circle at 15% 30%, rgba(255,255,255,.5) 0, transparent 18%),
+    radial-gradient(circle at 85% 70%, rgba(255,255,255,.45) 0, transparent 18%),
+    linear-gradient(135deg, #c8e0e7 0%, #d8f7ff 100%);
+}
+.testimonial-bg {
+  background:
+    radial-gradient(circle at 15% 30%, rgba(255,255,255,.5) 0, transparent 18%),
+    radial-gradient(circle at 85% 70%, rgba(255,255,255,.45) 0, transparent 18%),
+    linear-gradient(135deg, #d4e8f0 0%, #c2dde8 50%, #7acae9 100%);
+}
+/* Why Choose - bigger */
+.benefits-bg { padding-top:4rem !important; padding-bottom:4rem !important; }
+.benefits-bg h2 { font-size:2.6rem !important; }
+.benefits-bg .section-label { font-size:1rem !important; }
+.benefits-bg li, .benefits-bg p { font-size:1.05rem !important; }
+
+/* Testimonials - bigger */
+.testimonial-bg { padding-top:4.5rem !important; padding-bottom:4.5rem !important; }
+.testimonial-bg h2 { font-size:2.4rem !important; }
+.testimonial-bg .section-label { font-size:1rem !important; }
+.testimonial-card p { font-size:1rem !important; }
+.testimonial-card h6 { font-size:1.05rem !important; }
+.carousel-arrow:hover {
+  background:#1e3a5f;
+  color:#fff;
+}
+.testimonial-slide { display:none; }
+.testimonial-slide.active { display:block; animation: fadeIn .4s ease; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+.testimonial-card { background:rgba(255,255,255,.92); backdrop-filter:blur(6px); border-radius:14px; padding:22px; box-shadow:0 8px 24px rgba(0,0,0,0.10); position:relative; }
+.dot { background:rgba(30,58,95,.25); }
+.dot.active { background:#1e3a5f; }
+.cta-section { background: linear-gradient(135deg, #1e3a5f 0%, #2a5a72 100%); padding-top:6.5rem !important; padding-bottom:6.5rem !important; }
+.cta-section h2 { font-size:2.6rem !important; margin-bottom:1rem !important; }
+.cta-section p { margin-bottom:1.5rem !important; font-size:1.05rem !important; }
+
+.footer-section { background: linear-gradient(135deg, #17304a 0%, #224c64 100%); color:#cbd5e1; padding-top:1.25rem !important; padding-bottom:.75rem !important; }
+.footer-section h6 { font-size:.90rem; margin-bottom:.5rem !important; }
+.footer-section .social-icon { width:32px; height:32px; font-size:.85rem; }
+.footer-section hr { margin-top:.85rem !important; margin-bottom:.6rem !important; }
+.footer-section a.small, .footer-section p.small { font-size:.78rem !important; }
+.feature-pro {
+  background:#fdfeff;
+  border-radius:14px;
+  padding:22px 20px;
+  box-shadow:0 2px 4px rgba(15,23,42,.04), 0 8px 20px rgba(15,23,42,.05);
+  transition:transform .3s ease, box-shadow .3s ease;
+  height:100%;
+  border:1px solid #eaf3f7;
+}
+.feature-pro:hover {
+  transform:translateY(-6px);
+  box-shadow:0 6px 12px rgba(15,23,42,.06), 0 20px 40px rgba(15,23,42,.10);
+}
+.icon-wrap {
+  position:relative;
+  width:64px;
+  height:64px;
+  border-radius:16px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-size:1.6rem;
+  margin-bottom:18px;
+}
+.tiny-badge {
+  position:absolute;
+  bottom:-4px;
+  right:-4px;
+  width:24px;
+  height:24px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:.65rem;
+  color:#fff;
+  border:2px solid #fff;
+  box-shadow:0 2px 6px rgba(0,0,0,.15);
+}
+
+.social-icon {
+  width:42px; height:42px;
+  border-radius:50%;
+  background:rgba(255,255,255,.1);
+  color:#fff;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-size:1.1rem;
+  transition:all .3s ease;
+  text-decoration:none;
+}
+.social-icon:hover {
+  background:#22d3ee;
+  color:#1e3a5f;
+  transform:translateY(-3px);
+}
+.features-bg {
+  background:
+    radial-gradient(circle at 15% 30%, rgba(255,255,255,.55) 0, transparent 20%),
+    radial-gradient(circle at 85% 70%, rgba(255,255,255,.5) 0, transparent 20%),
+    linear-gradient(135deg, #ecf6fa 0%, #e0f0f6 50%, #d6ebf2 100%);
+}
+/* ============ FLUID RESPONSIVE — All Devices ============ */
+.hero-gradient h1 { font-size: clamp(1.6rem, 4.5vw, 3.4rem) !important; }
+.hero-gradient p { font-size: clamp(.85rem, 1.3vw, 1.05rem) !important; }
+.cta-section h2 { font-size: clamp(1.4rem, 3.5vw, 2.6rem) !important; }
+.cta-section p { font-size: clamp(.85rem, 1.3vw, 1.05rem) !important; }
+.benefits-bg h2, .testimonial-bg h2 { font-size: clamp(1.5rem, 3vw, 2.4rem) !important; }
+.step-num { font-size: clamp(3rem, 6vw, 6rem); }
+h2.step-title { font-size: clamp(1.5rem, 3vw, 2rem); }
+
+@media (max-width: 991.98px) {
+  .hero-gradient { min-height: auto; padding: 3rem 0; }
+  .hero-gradient h1, .hero-gradient p { text-align: center; }
+  .hero-gradient p { margin-left: auto; margin-right: auto; }
+  .hero-gradient .d-flex.flex-wrap.gap-3 { justify-content: center; }
+  .phone-wrap { margin-top: 2.5rem; width: clamp(220px, 50vw, 280px); }
+  .hero-float { display: none; }
+  .footer-section .col-md-6 { text-align: center !important; }
+  .footer-section .d-flex.gap-4 { justify-content: center !important; }
+  .benefits-bg .row > div { text-align: center; }
+}
+</style>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg hero-gradient py-3">
+<div class="container">
+<a class="navbar-brand fw-bold text-white" href="/">
+<i class="fas fa-chart-line me-2" style="color:#22d3ee;"></i>FinTrack
+</a>
+<button class="navbar-toggler border-0" data-bs-toggle="collapse" data-bs-target="#navMenu">
+<i class="fas fa-bars text-white"></i>
+</button>
+<div class="collapse navbar-collapse" id="navMenu">
+<ul class="navbar-nav mx-auto gap-3">
+<li class="nav-item"><a class="nav-link text-white" href="#home">Home</a></li>
+<li class="nav-item"><a class="nav-link text-white" href="#features">Features</a></li>
+<li class="nav-item"><a class="nav-link text-white" href="#about">About</a></li>
+<li class="nav-item"><a class="nav-link text-white" href="#contact">Contact</a></li>
+</ul>
+<div class="d-flex gap-2">
+<a href="/login" class="btn btn-outline-cyan btn-sm">Login</a>
+<a href="/register" class="btn btn-cyan btn-sm">Sign Up</a>
+</div>
+</div>
+</div>
 </nav>
 
-<section class="hero-section d-flex align-items-center" style="min-height:90vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-    <div class="container text-center text-white">
-        <h1 class="display-3 fw-bold mb-4">Take Control of Your Finances</h1>
-        <p class="lead mb-5 opacity-75">Track expenses, set budgets, forecast your future — all in one place. Powered by real Machine Learning.</p>
-        <a href="/register" class="btn btn-light btn-lg px-5 py-3 fw-bold" style="color:#6c63ff; border-radius:50px;">
-            Get Started for Free <i class="fas fa-arrow-right ms-2"></i>
-        </a>
-    </div>
+ <!-- HERO -->
+<section id="home" class="hero-gradient py-5">
+<div class="container py-4">
+<div class="row align-items-center g-5">
+
+<div class="col-lg-7 text-white">
+<h1 class="fw-bold mb-3" style="font-size:3.2rem;line-height:1.15;letter-spacing:-.5px;color:#ffffff !important;">
+Master Your Finances.<br>Achieve Your Goals.
+</h1>
+<p class="mb-4" style="color:#cfeef2;max-width:520px;font-size:1rem;line-height:1.6;">
+Effortlessly track expenses, manage income, and gain financial clarity with our intuitive personal finance tracker. Start building a secure future today.
+</p>
+<div class="d-flex flex-wrap gap-3">
+<a href="/register" class="btn btn-cyan">Get Started</a>
+<a href="/login" class="btn btn-outline-cyan">Login</a>
+<a href="/register" class="btn btn-cyan">Sign Up</a>
+</div>
+</div>
+
+<div class="col-lg-5">
+<div class="phone-wrap">
+
+<!-- Floating elements -->
+<!-- Floating elements -->
+<i class="fas fa-coins float-icon coin" style="top:0; left:-25px; font-size:2.6rem; color:#fbbf24;"></i>
+<i class="fas fa-rupee-sign float-icon rupee-anim" style="top:18%; left:-5px; font-size:1.2rem; color:#92400e; background:#fcd34d; width:38px;height:38px;display:flex;align-items:center;justify-content:center;border-radius:50%;"></i>
+<i class="fas fa-credit-card float-icon card-icon" style="top:5%; right:-30px; font-size:2.2rem; color:#22d3ee;"></i>
+<i class="fas fa-chart-pie float-icon pie-anim" style="top:38%; right:-35px; font-size:2.2rem; color:#a78bfa;"></i>
+<i class="fas fa-piggy-bank float-icon piggy" style="bottom:0; right:-20px; font-size:2.8rem; color:#f472b6;"></i>
+<i class="fas fa-dollar-sign float-icon dollar-anim" style="bottom:18%; left:-20px; font-size:1.3rem; color:#065f46; background:#6ee7b7; width:38px;height:38px;display:flex;align-items:center;justify-content:center;border-radius:50%;"></i>
+
+<!-- Phone -->
+<div class="phone-frame">
+<div class="phone-screen">
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+<div class="fw-bold" style="font-size:.85rem;color:#0891b2;">
+<i class="fas fa-chart-line me-1"></i>FinTrack
+</div>
+<i class="fas fa-bell" style="color:#94a3b8;font-size:.85rem;"></i>
+</div>
+
+<div class="rounded-3 p-3 mb-2" style="background:linear-gradient(135deg,#06b6d4,#0e7490);color:#fff;">
+<small style="opacity:.9;font-size:.65rem;">Total Balance</small>
+<div class="fw-bold" style="font-size:1.2rem;">₹52,480.00</div>
+<div class="d-flex justify-content-between mt-2" style="font-size:.62rem;opacity:.9;">
+<span><i class="fas fa-arrow-up"></i> Income ₹35K</span>
+<span><i class="fas fa-arrow-down"></i> Expense ₹12K</span>
+</div>
+</div>
+
+<div class="rounded p-2 mb-2" style="background:#f1f5f9;">
+<small style="font-size:.65rem;color:#475569;font-weight:600;">Spending This Week</small>
+<div class="d-flex align-items-end gap-1 mt-1" style="height:50px;">
+<div style="background:#22d3ee;width:14%;height:60%;border-radius:3px;"></div>
+<div style="background:#22d3ee;width:14%;height:80%;border-radius:3px;"></div>
+<div style="background:#22d3ee;width:14%;height:45%;border-radius:3px;"></div>
+<div style="background:#06b6d4;width:14%;height:95%;border-radius:3px;"></div>
+<div style="background:#22d3ee;width:14%;height:65%;border-radius:3px;"></div>
+<div style="background:#22d3ee;width:14%;height:55%;border-radius:3px;"></div>
+<div style="background:#22d3ee;width:14%;height:75%;border-radius:3px;"></div>
+</div>
+</div>
+
+<div class="rounded p-2 mb-2 d-flex align-items-center gap-2" style="background:#fef3c7;">
+<i class="fas fa-piggy-bank" style="color:#d97706;"></i>
+<div class="flex-fill">
+<div style="font-size:.65rem;color:#92400e;font-weight:600;">Vacation Fund</div>
+<div class="progress mt-1" style="height:4px;"><div class="progress-bar" style="width:70%;background:#f59e0b;"></div></div>
+</div>
+</div>
+
+<div class="rounded p-2 d-flex align-items-center gap-2" style="background:#dcfce7;">
+<i class="fas fa-shopping-cart" style="color:#16a34a;"></i>
+<div class="flex-fill">
+<div style="font-size:.7rem;font-weight:600;color:#166534;">Grocery</div>
+<div style="font-size:.6rem;color:#166534;">Today</div>
+</div>
+<span style="font-size:.7rem;font-weight:700;color:#166534;">-₹560</span>
+</div>
+
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</div>
 </section>
 
-<section class="py-5 bg-light">
-    <div class="container">
-        <div class="row g-4 text-center">
-            <div class="col-md-3">
-                <div class="card border-0 shadow-sm p-4 h-100">
-                    <i class="fas fa-chart-pie fa-2x mb-3" style="color:#6c63ff;"></i>
-                    <h5 class="fw-bold">Smart Analytics</h5>
-                    <p class="text-muted small">Visual charts showing exactly where your money goes</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card border-0 shadow-sm p-4 h-100">
-                    <i class="fas fa-brain fa-2x mb-3" style="color:#6c63ff;"></i>
-                    <h5 class="fw-bold">ML Predictions</h5>
-                    <p class="text-muted small">Machine learning forecasts your future spending patterns</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card border-0 shadow-sm p-4 h-100">
-                    <i class="fas fa-camera fa-2x mb-3" style="color:#6c63ff;"></i>
-                    <h5 class="fw-bold">Receipt Scanning</h5>
-                    <p class="text-muted small">Snap a photo of any receipt — we extract the details automatically</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card border-0 shadow-sm p-4 h-100">
-                    <i class="fas fa-bell fa-2x mb-3" style="color:#6c63ff;"></i>
-                    <h5 class="fw-bold">Budget Alerts</h5>
-                    <p class="text-muted small">Get email alerts before you overspend your monthly budget</p>
-                </div>
-            </div>
-        </div>
-    </div>
+<!-- FEATURES -->
+<section id="features" class="py-4" style="background:linear-gradient(180deg, #ffffff 0%, #f0f7fa 50%, #e6f1f5 100%);">
+<div class="container py-4">
+<div class="text-center mb-5">
+<div class="section-label">Features</div>
+<h2 class="fw-bold step-title" style="font-size:2rem;">Powerful Features for Financial Control</h2>
+</div>
+<div class="row g-4 justify-content-center">
+
+<div class="col-md-4">
+<div class="feature-pro">
+<div class="icon-wrap" style="background:linear-gradient(135deg,#d1fae5,#a7f3d0);">
+<i class="fas fa-shopping-cart" style="color:#059669;"></i>
+<i class="fas fa-tag tiny-badge" style="background:#10b981;"></i>
+</div>
+<h6 class="fw-bold mb-2" style="color:#1e3a5f;">Expense Tracking</h6>
+<p class="small text-muted mb-0">Categorize and monitor your daily spending.</p>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="feature-pro">
+<div class="icon-wrap" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);">
+<i class="fas fa-chart-bar" style="color:#2563eb;"></i>
+<i class="fas fa-coins tiny-badge" style="background:#f59e0b;"></i>
+</div>
+<h6 class="fw-bold mb-2" style="color:#1e3a5f;">Income Management</h6>
+<p class="small text-muted mb-0">Track all income sources and cash flow.</p>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="feature-pro">
+<div class="icon-wrap" style="background:linear-gradient(135deg,#cffafe,#a5f3fc);">
+<i class="fas fa-chart-line" style="color:#0891b2;"></i>
+<i class="fas fa-chart-pie tiny-badge" style="background:#06b6d4;"></i>
+</div>
+<h6 class="fw-bold mb-2" style="color:#1e3a5f;">Analytics Dashboard</h6>
+<p class="small text-muted mb-0">Visual insights into your financial health.</p>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="feature-pro">
+<div class="icon-wrap" style="background:linear-gradient(135deg,#ede9fe,#ddd6fe);">
+<i class="fas fa-calculator" style="color:#7c3aed;"></i>
+<i class="fas fa-rupee-sign tiny-badge" style="background:#a78bfa;"></i>
+</div>
+<h6 class="fw-bold mb-2" style="color:#1e3a5f;">Budget Planning</h6>
+<p class="small text-muted mb-0">Set realistic budgets and stick to them.</p>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="feature-pro">
+<div class="icon-wrap" style="background:linear-gradient(135deg,#e0f2fe,#bae6fd);">
+<i class="fas fa-cloud" style="color:#0369a1;"></i>
+<i class="fas fa-lock tiny-badge" style="background:#0284c7;"></i>
+</div>
+<h6 class="fw-bold mb-2" style="color:#1e3a5f;">Secure Data Storage</h6>
+<p class="small text-muted mb-0">Bank-level encryption for your data security.</p>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="feature-pro">
+<div class="icon-wrap" style="background:linear-gradient(135deg,#fef3c7,#fde68a);">
+<i class="fas fa-lightbulb" style="color:#d97706;"></i>
+<i class="fas fa-star tiny-badge" style="background:#fbbf24;"></i>
+</div>
+<h6 class="fw-bold mb-2" style="color:#1e3a5f;">Smart Insights</h6>
+<p class="small text-muted mb-0">Receive personalized financial tips.</p>
+</div>
+</div>
+
+</div>
+</div>
 </section>
+
+<!-- HOW IT WORKS -->
+<section class="py-5 howit-bg">
+<div class="container py-3 position-relative">
+<div class="text-center mb-5">
+<div class="section-label">How It Works</div>
+<h2 class="fw-bold step-title">Simple Steps to Financial Wellness</h2>
+</div>
+<div class="row g-4 text-center align-items-end">
+
+<div class="col-md-4">
+<div class="d-flex align-items-end justify-content-center gap-2 mb-3" style="min-height:140px;">
+<span class="step-num">1</span>
+<div class="step-illus-wrap">
+<i class="fas fa-user-edit step-person" style="position:absolute;top:10px;left:20px;"></i>
+<i class="fas fa-laptop step-device" style="bottom:0;left:5px;font-size:2.6rem;color:#1e3a5f;"></i>
+<i class="fas fa-pen step-device" style="top:5px;right:0;font-size:1.2rem;"></i>
+</div>
+</div>
+<h6 class="fw-bold step-title">Create Account</h6>
+<p class="small text-muted">Sign up in seconds and connect your accounts safely.</p>
+</div>
+
+<div class="col-md-4">
+<div class="d-flex align-items-end justify-content-center gap-2 mb-3" style="min-height:140px;">
+<span class="step-num">2</span>
+<div class="step-illus-wrap">
+<i class="fas fa-mobile-alt" style="position:absolute;top:5px;left:25px;font-size:3.2rem;color:#1e3a5f;"></i>
+<i class="fas fa-hand-pointer step-device" style="top:30px;right:5px;color:#fbbf24;"></i>
+<i class="fas fa-rupee-sign step-device" style="top:15px;left:38px;font-size:1rem;color:#22d3ee;"></i>
+</div>
+</div>
+<h6 class="fw-bold step-title">Add Income & Expenses</h6>
+<p class="small text-muted">Log transactions manually or automatically.</p>
+</div>
+
+<div class="col-md-4">
+<div class="d-flex align-items-end justify-content-center gap-2 mb-3" style="min-height:140px;">
+<span class="step-num">3</span>
+<div class="step-illus-wrap">
+<i class="fas fa-user-tie step-person" style="position:absolute;top:0;left:10px;"></i>
+<i class="fas fa-chart-bar step-device" style="bottom:0;right:0;font-size:2.6rem;color:#1e3a5f;"></i>
+<i class="fas fa-chart-line step-device" style="top:10px;right:5px;font-size:1.4rem;color:#22d3ee;"></i>
+</div>
+</div>
+<h6 class="fw-bold step-title">Analyze Spending</h6>
+<p class="small text-muted">Review reports and optimize your budget.</p>
+</div>
+
+</div>
+</div>
+</section>
+
+<!-- WHY CHOOSE -->
+<section id="about" class="py-5 benefits-bg">
+<div class="container py-4">
+<div class="row align-items-center g-5">
+<div class="col-md-5">
+<div class="section-label mb-2">Benefits</div>
+<h2 class="fw-bold step-title" style="font-size:3rem;line-height:1.1;">Why Choose<br>FinTrack?</h2>
+</div>
+<div class="col-md-7">
+<h5 class="fw-bold step-title mb-4">Why Choose FinTrack?</h5>
+<ul class="list-unstyled mb-0">
+<li class="mb-3 d-flex align-items-start">
+<i class="fas fa-check-circle me-3 mt-1" style="color:#0891b2;font-size:1.1rem;"></i>
+<span style="color:#1e3a5f;">Financial awareness and control.</span>
+</li>
+<li class="mb-3 d-flex align-items-start">
+<i class="fas fa-check-circle me-3 mt-1" style="color:#0891b2;font-size:1.1rem;"></i>
+<span style="color:#1e3a5f;">Smart insights for better decisions.</span>
+</li>
+<li class="mb-3 d-flex align-items-start">
+<i class="fas fa-check-circle me-3 mt-1" style="color:#0891b2;font-size:1.1rem;"></i>
+<span style="color:#1e3a5f;">Easy and intuitive expense management.</span>
+</li>
+<li class="mb-3 d-flex align-items-start">
+<i class="fas fa-check-circle me-3 mt-1" style="color:#0891b2;font-size:1.1rem;"></i>
+<span style="color:#1e3a5f;">Develop better savings habits.</span>
+</li>
+<li class="mb-3 d-flex align-items-start">
+<i class="fas fa-check-circle me-3 mt-1" style="color:#0891b2;font-size:1.1rem;"></i>
+<span style="color:#1e3a5f;">Reduced financial stress.</span>
+</li>
+<li class="mb-3 d-flex align-items-start">
+<i class="fas fa-check-circle me-3 mt-1" style="color:#0891b2;font-size:1.1rem;"></i>
+<span style="color:#1e3a5f;">Plan for your future with confidence.</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="py-5 testimonial-bg">
+<div class="container py-4 position-relative">
+<div class="text-center mb-5">
+<div class="section-label">Testimonials</div>
+<h2 class="fw-bold step-title" style="font-size:2rem;">Testimonials</h2>
+</div>
+
+<button class="carousel-arrow" style="left:-10px;" onclick="moveSlide(-1)"><i class="fas fa-chevron-left"></i></button>
+<button class="carousel-arrow" style="right:-10px;" onclick="moveSlide(1)"><i class="fas fa-chevron-right"></i></button>
+
+<div id="testimonialSlider">
+
+<div class="testimonial-slide active">
+<div class="row g-4 px-md-4">
+<div class="col-md-4">
+<div class="testimonial-card">
+<div class="d-flex align-items-center mb-3">
+<img src="https://i.pravatar.cc/80?img=44" class="rounded-circle me-3" style="width:48px;height:48px;object-fit:cover;">
+<div>
+<div class="fw-bold" style="color:#1e3a5f;">Priya Sharma</div>
+<div class="text-muted" style="font-size:.75rem;">Small Business Owner</div>
+</div>
+</div>
+<p class="small text-muted mb-0" style="line-height:1.6;">"FinTrack changed my life. I finally know where my money goes! Highly recommend."</p>
+</div>
+</div>
+<div class="col-md-4">
+<div class="testimonial-card">
+<div class="d-flex align-items-center mb-3">
+<img src="https://i.pravatar.cc/80?img=33" class="rounded-circle me-3" style="width:48px;height:48px;object-fit:cover;">
+<div>
+<div class="fw-bold" style="color:#1e3a5f;">Ananya Patel</div>
+<div class="text-muted" style="font-size:.75rem;">Marketing Manager</div>
+</div>
+</div>
+<p class="small text-muted mb-0" style="line-height:1.6;">"The budgeting tools and analytics helped me save more than I ever thought possible!"</p>
+</div>
+</div>
+<div class="col-md-4">
+<div class="testimonial-card">
+<div class="d-flex align-items-center mb-3">
+<img src="https://i.pravatar.cc/80?img=68" class="rounded-circle me-3" style="width:48px;height:48px;object-fit:cover;">
+<div>
+<div class="fw-bold" style="color:#1e3a5f;">Rohan Verma</div>
+<div class="text-muted" style="font-size:.75rem;">Software Engineer</div>
+</div>
+</div>
+<p class="small text-muted mb-0" style="line-height:1.6;">"Clean interface, smart insights, and Indian Rupee support. Exactly what I needed!"</p>
+</div>
+</div>
+</div>
+</div>
+
+<div class="testimonial-slide">
+<div class="row g-4 px-md-4">
+<div class="col-md-4">
+<div class="testimonial-card">
+<div class="d-flex align-items-center mb-3">
+<img src="https://i.pravatar.cc/80?img=23" class="rounded-circle me-3" style="width:48px;height:48px;object-fit:cover;">
+<div>
+<div class="fw-bold" style="color:#1e3a5f;">Vikram Singh</div>
+<div class="text-muted" style="font-size:.75rem;">Freelance Designer</div>
+</div>
+</div>
+<p class="small text-muted mb-0" style="line-height:1.6;">"Setting savings goals and watching my progress every week keeps me motivated!"</p>
+</div>
+</div>
+<div class="col-md-4">
+<div class="testimonial-card">
+<div class="d-flex align-items-center mb-3">
+<img src="https://i.pravatar.cc/80?img=49" class="rounded-circle me-3" style="width:48px;height:48px;object-fit:cover;">
+<div>
+<div class="fw-bold" style="color:#1e3a5f;">Neha Gupta</div>
+<div class="text-muted" style="font-size:.75rem;">Doctor</div>
+</div>
+</div>
+<p class="small text-muted mb-0" style="line-height:1.6;">"Beautifully designed and so easy to use. Tracking expenses has never been simpler."</p>
+</div>
+</div>
+<div class="col-md-4">
+<div class="testimonial-card">
+<div class="d-flex align-items-center mb-3">
+<img src="https://i.pravatar.cc/80?img=51" class="rounded-circle me-3" style="width:48px;height:48px;object-fit:cover;">
+<div>
+<div class="fw-bold" style="color:#1e3a5f;">Arjun Mehta</div>
+<div class="text-muted" style="font-size:.75rem;">Startup Founder</div>
+</div>
+</div>
+<p class="small text-muted mb-0" style="line-height:1.6;">"FinTrack gives me complete control over my finances. The analytics are top-notch!"</p>
+</div>
+</div>
+</div>
+</div>
+
+<div class="testimonial-slide">
+<div class="row g-4 px-md-4">
+<div class="col-md-4">
+<div class="testimonial-card">
+<div class="d-flex align-items-center mb-3">
+<img src="https://i.pravatar.cc/80?img=16" class="rounded-circle me-3" style="width:48px;height:48px;object-fit:cover;">
+<div>
+<div class="fw-bold" style="color:#1e3a5f;">Kavya Reddy</div>
+<div class="text-muted" style="font-size:.75rem;">Teacher</div>
+</div>
+</div>
+<p class="small text-muted mb-0" style="line-height:1.6;">"Managing my monthly budget became stress-free. Highly recommended for everyone!"</p>
+</div>
+</div>
+<div class="col-md-4">
+<div class="testimonial-card">
+<div class="d-flex align-items-center mb-3">
+<img src="https://i.pravatar.cc/80?img=60" class="rounded-circle me-3" style="width:48px;height:48px;object-fit:cover;">
+<div>
+<div class="fw-bold" style="color:#1e3a5f;">Karan Joshi</div>
+<div class="text-muted" style="font-size:.75rem;">Architect</div>
+</div>
+</div>
+<p class="small text-muted mb-0" style="line-height:1.6;">"The visual reports help me see exactly where my money goes each month. Love it!"</p>
+</div>
+</div>
+<div class="col-md-4">
+<div class="testimonial-card">
+<div class="d-flex align-items-center mb-3">
+<img src="https://i.pravatar.cc/80?img=20" class="rounded-circle me-3" style="width:48px;height:48px;object-fit:cover;">
+<div>
+<div class="fw-bold" style="color:#1e3a5f;">Sneha Iyer</div>
+<div class="text-muted" style="font-size:.75rem;">Consultant</div>
+</div>
+</div>
+<p class="small text-muted mb-0" style="line-height:1.6;">"Finally an app that understands Indian users. Rupee support is a game changer!"</p>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+
+<div class="text-center mt-4">
+<span class="dot active" onclick="goToSlide(0)" style="cursor:pointer;"></span>
+<span class="dot" onclick="goToSlide(1)" style="cursor:pointer;"></span>
+<span class="dot" onclick="goToSlide(2)" style="cursor:pointer;"></span>
+</div>
+</div>
+</section>
+
+<script>
+let currentSlide = 0;
+const slides = document.querySelectorAll('.testimonial-slide');
+const dots = document.querySelectorAll('.dot');
+
+function showSlide(n) {
+  slides.forEach(s => s.classList.remove('active'));
+  dots.forEach(d => d.classList.remove('active'));
+  currentSlide = (n + slides.length) % slides.length;
+  slides[currentSlide].classList.add('active');
+  dots[currentSlide].classList.add('active');
+}
+function moveSlide(dir) { showSlide(currentSlide + dir); }
+function goToSlide(n) { showSlide(n); }
+</script>
+<!-- CTA -->
+<section class="cta-section">
+<div class="container text-center text-white">
+<div style="opacity:.85;font-size:.9rem;letter-spacing:.5px;">Call-to-Action</div>
+<h2 class="fw-bold mb-3 mt-2" style="font-size:2.4rem;color:#ffffff !important;line-height:1.2;">
+Ready to Take Charge of<br>Your Finances?
+</h2>
+<p class="mb-4" style="color:#cfeef2;font-size:1rem;">Join thousands of users who are already managing their money better.</p>
+<div class="d-flex justify-content-center gap-3">
+<a href="/register" class="btn btn-cyan">Sign Up Now</a>
+<a href="/login" class="btn btn-outline-cyan">Login</a>
+</div>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer id="contact" class="footer-section ">
+<div class="container text-center">
+
+<div class="row g-4 justify-content-center">
+
+<div class="col-md-5">
+<h6 class="text-white mb-3 fw-bold">Contact Info</h6>
+<a href="mailto:support@fintrack.com" class="text-white-50 text-decoration-none small d-block mb-1">
+<i class="fas fa-envelope me-2"></i>support@fintrack.com
+</a>
+<a href="tel:+919876543210" class="text-white-50 text-decoration-none small d-block">
+<i class="fas fa-phone me-2"></i>+91 98765 43210
+</a>
+</div>
+
+<div class="col-md-5">
+<h6 class="text-white mb-3 fw-bold">Social Media</h6>
+<div class="d-flex gap-4 justify-content-center">
+<a href="https://instagram.com" target="_blank" class="social-icon">
+<i class="fab fa-instagram"></i>
+</a>
+<a href="https://linkedin.com" target="_blank" class="social-icon">
+<i class="fab fa-linkedin"></i>
+</a>
+</div>
+</div>
+
+</div>
+
+<hr class="my-4" style="border-color:rgba(255,255,255,.15);">
+<p class="text-center small mb-0" style="color:rgba(255,255,255,.6);">
+Copyright © 2026 FinTrack. All rights reserved.
+</p>
+</div>
+</footer>
 {% endblock %}

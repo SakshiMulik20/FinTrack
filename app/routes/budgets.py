@@ -47,8 +47,8 @@ def index():
         year=now.year
     ).all()
 
-    accounts = Account.query.filter_by(user_id=current_user.id).all()
-    account_ids = [a.id for a in accounts]
+    default_account = Account.query.filter_by(user_id=current_user.id, is_default=True).first()
+    account_ids = [default_account.id] if default_account else []
 
     # Calculate spending per budget
     budget_data = []
